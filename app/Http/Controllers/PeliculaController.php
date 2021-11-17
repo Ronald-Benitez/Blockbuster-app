@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pelicula;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PeliculaController extends Controller
 {
@@ -14,7 +15,9 @@ class PeliculaController extends Controller
      */
     public function index()
     {
-        //
+        $pelicula = \DB::table('peliculas')
+            ->get();
+        return view('pelicula.index')->with('peliculas', $pelicula);
     }
 
     /**
@@ -24,7 +27,7 @@ class PeliculaController extends Controller
      */
     public function create()
     {
-        //
+        return view('pelicula.form');
     }
 
     /**
@@ -35,7 +38,30 @@ class PeliculaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'file' => 'required|image|max:2048',
+            //'synopsis' => 'required',
+            //'name' => 'required'
+        ]);
+        $img = $request->file('file')->store('public/img');
+        $urlImg = Storage::url($img);
+
+        $data = ([
+            "name" => $request->input('name'),
+            "synopsis" => $request->input('synopsis'),
+            "img" => $urlImg,
+            "reserved" => 0,
+            "likes" => 0
+        ]);
+
+        Pelicula::create($data);
+        // echo "<pre>";
+        // var_dump($data);
+        // echo "</pre>";
+        session_start();
+        $_SESSION["estado"] = "Película registrada con éxito";
+        $_SESSION["alert"] = "success";
+        return redirect()->route('Pelicula.index');
     }
 
     /**
