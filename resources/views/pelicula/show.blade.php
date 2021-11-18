@@ -1,8 +1,20 @@
 @extends('theme.base')
 @section('content')
+    <style>
+        @media (max-width:800px) {
+            .card {
+                width: 99%;
+            }
+
+            .img {
+                width: 99%;
+            }
+        }
+
+    </style>
     <div class="d-flex justify-content-center">
         <div class="card" style="width: 50rem;">
-            <img src="{{ asset($pelicula->img) }}" class="rounded mx-auto d-block" style="width: 35rem;">
+            <img src="{{ asset($pelicula->img) }}" class="rounded mx-auto d-block img">
             <div class="card-body text-center">
                 <h5 class="card-title">{{ $pelicula->name }}</h5>
                 <p class="card-text"><b>Sinopsis</b></p>
@@ -23,4 +35,5 @@
         </div>
     </div>
     </div>
+
 @endsection
