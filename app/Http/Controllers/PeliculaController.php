@@ -16,6 +16,8 @@ class PeliculaController extends Controller
     public function index()
     {
         $pelicula = \DB::table('peliculas')
+            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes')
+            ->where('stock', '>', 0)
             ->get();
         return view('pelicula.index')->with('peliculas', $pelicula);
     }
@@ -40,8 +42,11 @@ class PeliculaController extends Controller
     {
         $request->validate([
             'file' => 'required|image|max:2048',
-            //'synopsis' => 'required',
-            //'name' => 'required'
+            'synopsis' => 'required',
+            'name' => 'required',
+            'sellP' => 'required|min:0',
+            'reservationP' => 'required|min:0',
+            'stock' => 'required|min:0'
         ]);
         $img = $request->file('file')->store('public/img');
         $urlImg = Storage::url($img);
@@ -50,8 +55,10 @@ class PeliculaController extends Controller
             "name" => $request->input('name'),
             "synopsis" => $request->input('synopsis'),
             "img" => $urlImg,
-            "reserved" => 0,
-            "likes" => 0
+            "likes" => 0,
+            "stock" => $request->input('stock'),
+            "sellP" => $request->input('sellP'),
+            "reservationP" => $request->input('reservationP')
         ]);
 
         Pelicula::create($data);
@@ -70,9 +77,15 @@ class PeliculaController extends Controller
      * @param  \App\Models\Pelicula  $pelicula
      * @return \Illuminate\Http\Response
      */
-    public function show(Pelicula $pelicula)
+    public function show($pelicula)
     {
-        //
+        $pelicula = \DB::table('peliculas')
+            ->where('id', '=', $pelicula)
+            ->get();
+        // echo "<pre>";
+        // var_dump($pelicula[0]->name);
+        // echo "</pre>";
+        return view('pelicula.show')->with('pelicula', $pelicula[0]);
     }
 
     /**

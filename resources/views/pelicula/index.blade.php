@@ -2,17 +2,24 @@
 
 @section('content')
     <style>
+        .card {
+            width: 19.99%
+        }
+
         @media (max-width:800px) {
 
 
             .card {
-                width: 50%;
+                width: 49%;
             }
         }
 
     </style>
     <?php
     session_start();
+    $_SESSION['typeUser'] = 1;
+    $_SESSION['idUser'] = 1;
+    
     $count = 0;
     ?>
     <div class="container py-5">
@@ -35,11 +42,15 @@
         <div class="row">
             @foreach ($peliculas as $pelicula)
 
-                <div class="card col-3">
-                    <img src="{{ asset($pelicula->img) }}" class="card-img-top" alt="...">
+                <div class="card p-2 m-2">
+                    <a href="{{ route('Pelicula.show', $pelicula->id) }}" class="btn btn-outline-info">
+                        <img src="{{ asset($pelicula->img) }}" class="card-img-top" alt="...">
+                    </a>
                     <div class="card-body">
-                        <h5 class=" card-title">{{ $pelicula->name }}</h5>
-                        <p class="card-text"><small class="text-muted">ültima actualización
+                        <a href="{{ route('Pelicula.show', $pelicula->id) }}" class="btn btn-light">
+                            <h5 class=" card-title">{{ $pelicula->name }}</h5>
+                        </a>
+                        <p class="card-text"><small class="text-muted">Última actualización
                                 {{ $pelicula->updated_at }}</small></p></small></p>
                         <p class="card-text"><small class="text-muted"><svg xmlns="http://www.w3.org/2000/svg"
                                     width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">

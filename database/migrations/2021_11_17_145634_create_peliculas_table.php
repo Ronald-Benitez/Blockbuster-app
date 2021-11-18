@@ -20,7 +20,9 @@ class CreatePeliculasTable extends Migration
             $table->string('synopsis');
             $table->string('img');
             $table->integer('likes');
-            $table->integer('reserved');
+            $table->float('sellP');
+            $table->float('reservationP');
+            $table->integer('stock');
         });
     }
 
