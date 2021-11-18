@@ -18,8 +18,8 @@ class CreateComprasTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->float('buyP');
-            $table->unsignedBigInteger('idUser')->unique();
-            $table->unsignedBigInteger('idMovie')->unique();
+            $table->unsignedBigInteger('idUser');
+            $table->unsignedBigInteger('idMovie');
         });
     }
 

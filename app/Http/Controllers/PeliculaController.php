@@ -13,12 +13,14 @@ class PeliculaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $pelicula = \DB::table('peliculas')
             ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes')
             ->where('stock', '>', 0)
             ->get();
+
         return view('pelicula.index')->with('peliculas', $pelicula);
     }
 
@@ -79,13 +81,28 @@ class PeliculaController extends Controller
      */
     public function show($pelicula)
     {
-        $pelicula = \DB::table('peliculas')
+
+        session_start();
+
+        $movie = \DB::table('peliculas')
             ->where('id', '=', $pelicula)
             ->get();
-        // echo "<pre>";
-        // var_dump($pelicula[0]->name);
-        // echo "</pre>";
-        return view('pelicula.show')->with('pelicula', $pelicula[0]);
+
+        if (isset($_SESSION['idUser'])) {
+            $likes = \DB::table('likes')
+                ->select('id')
+                ->where('idUser', '=', $_SESSION['idUser'])
+                ->where('idMovie', '=', $pelicula)
+                ->get();
+            // echo "<pre>";
+            // var_dump($likes[0]);
+            // echo "</pre>";
+            if (!empty($likes[0])) {
+                return view('pelicula.show')->with('pelicula', $movie[0])->with("like", $likes[0]);
+            }
+        }
+
+        return view('pelicula.show')->with('pelicula', $movie[0]);
     }
 
     /**
