@@ -26,6 +26,7 @@
             .img {
                 width: 99%;
             }
+
         }
 
     </style>
@@ -82,9 +83,9 @@
 
 
                 <div class="input-group">
-                    <span class="input-group-text">Precio de alquiler</span>
+                    <span class="input-group-text">Alquiler</span>
                     <input type="text" readonly class="form-control" value="${{ $pelicula->reservationP }}">
-                    <span class="input-group-text">Precio de compra</span>
+                    <span class="input-group-text">Compra</span>
                     <input type="text" readonly class="form-control" value="${{ $pelicula->sellP }}" </div>
                 </div>
 
