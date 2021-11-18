@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
+use App\Models\Pelicula;
 use Illuminate\Http\Request;
+use DB;
 
 class LikeController extends Controller
 {
@@ -35,7 +37,20 @@ class LikeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $movieData = \DB::table('peliculas')
+            ->where('id', $request->input('idM'))
+            ->get();
+        $movie = Pelicula::where('id', $request->input("idM"));
+        $movie->update(["likes" => $movieData[0]->likes + 1]);
+
+        $si = Like::create([
+            "idUser" => $_SESSION['idUser'],
+            "idMovie" => $request->input("idM")
+        ]);
+        return redirect()->back();
     }
 
     /**
@@ -78,8 +93,20 @@ class LikeController extends Controller
      * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Like $like)
+    public function destroy($like)
     {
-        //
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $movieData = \DB::table('peliculas')
+            ->where('id', $_SESSION['idMovie'])
+            ->get();
+        $movie = Pelicula::where('id', $_SESSION['idMovie']);
+        $movie->update(["likes" => $movieData[0]->likes - 1]);
+
+        DB::table('likes')
+            ->where('id', $like)
+            ->delete();
+        return redirect()->back();
     }
 }
