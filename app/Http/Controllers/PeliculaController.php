@@ -6,6 +6,15 @@ use App\Models\Pelicula;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+class help
+{
+    public $name;
+    public $synopsis;
+    public $sellP;
+    public $reservationP;
+    public $stock;
+}
+
 class PeliculaController extends Controller
 {
     /**
@@ -31,7 +40,7 @@ class PeliculaController extends Controller
      */
     public function create()
     {
-        return view('pelicula.form');
+        return view('pelicula.form')->with("data", new help);
     }
 
     /**
@@ -67,7 +76,9 @@ class PeliculaController extends Controller
         // echo "<pre>";
         // var_dump($data);
         // echo "</pre>";
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $_SESSION["estado"] = "Película registrada con éxito";
         $_SESSION["alert"] = "success";
         return redirect()->route('Pelicula.index');
@@ -111,9 +122,13 @@ class PeliculaController extends Controller
      * @param  \App\Models\Pelicula  $pelicula
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pelicula $pelicula)
+    public function edit($id)
     {
-        //
+        $pelicula = Pelicula::where('id', $id)->first();
+        // echo "<pre>";
+        // var_dump($movie[0]);
+        // echo "</pre>";
+        return view('pelicula.form', compact('pelicula'));
     }
 
     /**
@@ -123,9 +138,44 @@ class PeliculaController extends Controller
      * @param  \App\Models\Pelicula  $pelicula
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pelicula $pelicula)
+    public function update(Request $request, $pelicula)
     {
-        //
+        $request->validate([
+            'synopsis' => 'required',
+            'name' => 'required',
+            'sellP' => 'required|min:0',
+            'reservationP' => 'required|min:0',
+            'stock' => 'required|min:0'
+        ]);
+        if (!empty($request->file('file'))) {
+            $img = $request->file('file')->store('public/img');
+            $urlImg = Storage::url($img);
+
+            $data = ([
+                "name" => $request->input('name'),
+                "synopsis" => $request->input('synopsis'),
+                "img" => $urlImg,
+                "stock" => $request->input('stock'),
+                "sellP" => $request->input('sellP'),
+                "reservationP" => $request->input('reservationP')
+            ]);
+        } else {
+            $data = ([
+                "name" => $request->input('name'),
+                "synopsis" => $request->input('synopsis'),
+                "stock" => $request->input('stock'),
+                "sellP" => $request->input('sellP'),
+                "reservationP" => $request->input('reservationP')
+            ]);
+        }
+        $toUpdate = Pelicula::where('id', $pelicula);
+        $toUpdate->update($data);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $_SESSION["estado"] = "Película actualizada con éxito";
+        $_SESSION["alert"] = "success";
+        return redirect()->route('Pelicula.index');
     }
 
     /**
