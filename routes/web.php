@@ -5,6 +5,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PeliculaController;
 use App\Http\Controllers\ReservacionController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,3 +28,7 @@ Route::resource('Pelicula', PeliculaController::class);
 Route::resource('Reservacion', ReservacionController::class);
 Route::resource('Usuario', UsuarioController::class);
 Route::resource('Compra', CompraController::class);
+
+Route::get('login', [LoginController::class, 'index']);
+Route::post('login', [LoginController::class, 'loguear'])->name('login.loguear');
+Route::post('logout', [LoginController::class, 'logout'])->name('login.logout');
