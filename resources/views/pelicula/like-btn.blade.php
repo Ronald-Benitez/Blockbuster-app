@@ -27,7 +27,7 @@
         </form>
     @endif
 @else
-    <a class="btn btn-warning my-2" style="cursor: default;"><b>
+    <a class="btn btn-warning my-2" onclick="return alert('Debe registrarse')"><b>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star"
                 viewBox="0 0 16 16">
                 <path
