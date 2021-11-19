@@ -53,7 +53,7 @@ class PeliculaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|image|max:2048',
+            'file' => 'required|image',
             'synopsis' => 'required',
             'name' => 'required',
             'sellP' => 'required|min:0',

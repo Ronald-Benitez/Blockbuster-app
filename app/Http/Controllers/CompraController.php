@@ -47,21 +47,31 @@ class CompraController extends Controller
             $movieData = \DB::table('peliculas')
                 ->where('id', $request->input('idM'))
                 ->get();
-            $movie = Pelicula::where('id', $request->input("idM"));
-            $movie->update(["stock" => $movieData[0]->stock - 1]);
             // echo "<pre>";
             // var_dump($movieData[0]);
             // echo "</pre>";
-            $si = Compra::create([
-                "name" => $movieData[0]->name,
-                "buyP" => $movieData[0]->sellP,
-                "idUser" => $_SESSION['idUser'],
-                "idMovie" => $request->input("idM")
-            ]);
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            if ($movieData[0]->stock > 0) {
+                Compra::create([
+                    "name" => $movieData[0]->name,
+                    "buyP" => $movieData[0]->sellP,
+                    "idUser" => $_SESSION['idUser'],
+                    "idMovie" => $request->input("idM")
+                ]);
+                $movie = Pelicula::where('id', $request->input("idM"));
+                $movie->update(["stock" => $movieData[0]->stock - 1]);
+                $_SESSION["estado"] = "Película comprada con éxito";
+                $_SESSION["alert"] = "success";
+            }
             // echo "<pre>";
             // var_dump($si);
             // echo "</pre>";
+            $_SESSION["estado"] = "Película sin stock";
+            $_SESSION["alert"] = "warning";
         }
+
 
         return redirect()->back();
     }

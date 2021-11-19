@@ -54,8 +54,8 @@
     <?php
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
-        $_SESSION['typeUser'] = 'admin';
-        $_SESSION['idUser'] = 3;
+        $_SESSION['typeUser'] = 'user';
+        $_SESSION['idUser'] = 4;
         // unset($_SESSION['typeUser']);
         // unset($_SESSION['idUser']);
     }
@@ -85,7 +85,7 @@
                 <div class="card text-center">
 
                     <a href="{{ route('Pelicula.show', $pelicula->id) }}" class="btn btn-config mt-2 imgX">
-                        <img src="{{ asset($pelicula->img) }}" class="card-img-top " alt="...">
+                        <img loading="lazy" src="{{ asset($pelicula->img) }}" class="card-img-top " alt="...">
                     </a>
                     <div class="card-body">
                         <a href="{{ route('Pelicula.show', $pelicula->id) }}" class="btn btn-config">

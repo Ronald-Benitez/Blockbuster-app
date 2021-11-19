@@ -45,7 +45,7 @@
                 @else
                     <input type="file" name="file" id="" class="form-control m-2" accept="image/*" required>
                     @error('sellP')
-                        <small class="text-warning m-2">Imagén requerida no mayor a 2 MB</small><br>
+                        <small class="text-warning m-2">Imagén requerida</small><br>
                     @enderror
                 @endif
 
