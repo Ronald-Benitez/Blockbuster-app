@@ -6,7 +6,7 @@ use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\UseUse;
-
+use Symfony\Contracts\Service\Attribute\Required;
 
 class UsuarioController extends Controller
 {
@@ -39,11 +39,19 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'username'=>'required|alpha_dash',
+            'password'=>'required'
+        ]);
         $usuario = new Usuario();
         $usuario->username = $request->username;
         $usuario->password = password_hash($request->password,PASSWORD_DEFAULT);
         $usuario->type = "user";
         $usuario->save();
+
+        session_start();
+        $_SESSION["estado"]="¡ Usuario Agregado exitosamente !";
+        $_SESSION["alert"]="success";
         return view('usuario.perfil', compact('usuario'));
     }
 
@@ -53,9 +61,15 @@ class UsuarioController extends Controller
      * @param  \App\Models\Usuario  $usuario
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show($id)
     {
         $usuario = Usuario::where('id','=',$id)->first();
+        if(empty($usuario)){//USUSARIO NO ENCONTRADO
+            session_start();
+            $_SESSION["estado"]="¡ El usuario con el id ".$id." no existe !";
+            $_SESSION["alert"]="danger";
+            return redirect()->route('Usuario.index');
+        }
         return view('usuario.perfil', compact('usuario'));
     }
 
@@ -67,7 +81,7 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
-        $usuario = Usuario::where('id','=',$id)->first();
+        $usuario = $this->existeUsuario($id);
         return view('usuario.edit', compact('usuario'));
     }
 
@@ -80,13 +94,22 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $usuario = Usuario::where('id','=',$id)->first();
+        $request->validate([
+            'username'=>'required|alpha_dash',
+            'type'=>'required',
+            'password'=> 'required_with:cambiar',
+        ]);
+        
+        $usuario = $this->existeUsuario($id);
+
         $data=([
             'username'=> $request->username,
             'password'=> password_hash($request->password,PASSWORD_DEFAULT),
             'type'=>$request->type
         ]);
         $usuario->update($data);
+        $_SESSION["estado"]="¡ Usuario Editado con exito !";
+        $_SESSION["alert"]="success";
         return view('usuario.perfil', compact('usuario'));
     }
 
@@ -98,13 +121,24 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('usuarios')
-            ->where('id', $id)
-            ->delete();
+        $usuario = $this->existeUsuario($id);
+        $usuario->delete();
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
+                $_SESSION["estado"]="¡ Usuario Eliminado exitosamente !";
+                $_SESSION["alert"]="danger";
             }
             return redirect()->route('Usuario.index');
+    }
 
+    public function existeUsuario($id){
+        $usuario = Usuario::where('id','=',$id)->first();
+        if(empty($usuario)){//USUSARIO NO ENCONTRADO
+            session_start();
+            $_SESSION["estado"]="¡ El usuario con el id ".$id." no existe !";
+            $_SESSION["alert"]="danger";
+            return redirect()->route('Usuario.index',"missing");
+        }
+        return $usuario;
     }
 }
