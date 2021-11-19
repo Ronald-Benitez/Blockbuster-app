@@ -105,13 +105,28 @@ class PeliculaController extends Controller
                 ->select('id')
                 ->where('idUser', '=', $_SESSION['idUser'])
                 ->where('idMovie', '=', $pelicula)
-                ->get();
+                ->first();
+
+            $compra = \DB::table('compras')
+                ->select('id')
+                ->where('idUser', '=', $_SESSION['idUser'])
+                ->where('idMovie', '=', $pelicula)
+                ->first();
+
+            $alquiler = \DB::table('reservacions')
+                ->select('id')
+                ->where('idUser', '=', $_SESSION['idUser'])
+                ->where('idMovie', '=', $pelicula)
+                ->first();
             // echo "<pre>";
             // var_dump($likes[0]);
             // echo "</pre>";
-            if (!empty($likes[0])) {
-                return view('pelicula.show')->with('pelicula', $movie[0])->with("like", $likes[0]);
-            }
+
+            return view('pelicula.show')
+                ->with('pelicula', $movie[0])
+                ->with("like", $likes)
+                ->with("compra", $compra)
+                ->with("alquiler", $alquiler);
         }
 
         return view('pelicula.show')->with('pelicula', $movie[0]);
