@@ -3,10 +3,27 @@
 @section('content')
     <style>
         .card {
-            width: 18%
+            width: 19.2%;
+            display: flex;
+            justify-content: center;
         }
 
-        @media (max-width:1000px) {
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .imgX {
+            max-height: 150px;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width:1200px) {
             .card {
                 width: 32%;
             }
@@ -21,6 +38,11 @@
         @media (max-width:500px) {
             .card {
                 width: 99%;
+            }
+
+            .imgX {
+                max-height: 300px;
+
             }
         }
 
@@ -51,15 +73,15 @@
         ?>
     </div>
     <div class="container">
-        <div class="row d-flex justify-content-center">
+        <div class="row d-flex justify-content-around">
             @foreach ($peliculas as $pelicula)
 
-                <div class="card text-center m-1">
+                <div class="card text-center">
 
-                    <a href="{{ route('Pelicula.show', $pelicula->id) }}" class="btn btn-outline-secondary mt-2">
-                        <img src="{{ asset($pelicula->img) }}" class="card-img-top" alt="...">
+                    <a href="{{ route('Pelicula.show', $pelicula->id) }}" class="btn btn-outline-secondary mt-2 imgX">
+                        <img src="{{ asset($pelicula->img) }}" class="card-img-top " alt="...">
                     </a>
-                    <div class="card-body ">
+                    <div class="card-body">
                         <a href="{{ route('Pelicula.show', $pelicula->id) }}" class="btn btn-light">
                             <h5 class=" card-title">{{ $pelicula->name }}</h5>
                         </a>
