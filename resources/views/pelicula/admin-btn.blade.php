@@ -1,4 +1,4 @@
-@if (isset($_SESSION['typeUser']) && $_SESSION['typeUser'] == 'admin')
+@if (session()->exists('idUser') && session()->get('typeUser') == 'admin')
     <div class="row my-2">
         <div class="col-6 d-flex">
             <a href="{{ route('Pelicula.edit', $pelicula->id) }}" class="btn btn-warning flex-fill">

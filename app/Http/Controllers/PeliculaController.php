@@ -77,11 +77,10 @@ class PeliculaController extends Controller
         // echo "<pre>";
         // var_dump($data);
         // echo "</pre>";
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        $_SESSION["estado"] = "Película registrada con éxito";
-        $_SESSION["alert"] = "success";
+        session([
+            'estado' => 'Película guardada con éxito',
+            'alert' => 'success'
+        ]);
         return redirect()->route('Pelicula.index');
     }
 
@@ -93,29 +92,26 @@ class PeliculaController extends Controller
      */
     public function show($pelicula)
     {
-
-        session_start();
-
         $movie = \DB::table('peliculas')
             ->where('id', '=', $pelicula)
             ->get();
 
-        if (isset($_SESSION['idUser'])) {
+        if (session()->exists('idUser')) {
             $likes = \DB::table('likes')
                 ->select('id')
-                ->where('idUser', '=', $_SESSION['idUser'])
+                ->where('idUser', '=', session()->get('idUser'))
                 ->where('idMovie', '=', $pelicula)
                 ->first();
 
             $compra = \DB::table('compras')
                 ->select('id')
-                ->where('idUser', '=', $_SESSION['idUser'])
+                ->where('idUser', '=', session()->get('idUser'))
                 ->where('idMovie', '=', $pelicula)
                 ->first();
 
             $alquiler = \DB::table('reservacions')
                 ->select('id')
-                ->where('idUser', '=', $_SESSION['idUser'])
+                ->where('idUser', '=', session()->get('idUser'))
                 ->where('idMovie', '=', $pelicula)
                 ->first();
             // echo "<pre>";
@@ -186,11 +182,10 @@ class PeliculaController extends Controller
         }
         $toUpdate = Pelicula::where('id', $pelicula);
         $toUpdate->update($data);
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        $_SESSION["estado"] = "Película actualizada con éxito";
-        $_SESSION["alert"] = "success";
+        session([
+            'estado' => 'Película actualizada con éxito',
+            'alert' => 'success'
+        ]);
         return redirect()->route('Pelicula.show', $pelicula);
     }
 
@@ -205,11 +200,10 @@ class PeliculaController extends Controller
         DB::table('peliculas')
             ->where('id', $pelicula)
             ->delete();
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        $_SESSION["estado"] = "Eliminado éxitoso";
-        $_SESSION["alert"] = "danger";
+        session([
+            'estado' => 'Película eliminada con éxito',
+            'alert' => 'danger'
+        ]);
         return redirect()->route('Pelicula.index');
     }
 }

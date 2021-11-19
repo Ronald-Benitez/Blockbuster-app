@@ -1,18 +1,26 @@
-@if (isset($_SESSION['idUser']))
+@if (session()->exists('idUser'))
     <div class="row my-2">
         <div class="col-6">
             @if (isset($compra) && !empty($compra))
-                <div class="my-2 d-flex">
+                <form action="{{ route('Compra.store') }}" class="my-2 d-flex" method="post">
+                    @csrf
+                    <input type="text" class="invisible" name="idM" value="{{ $pelicula->id }}">
+                    @if ($pelicula->stock > 0)
+                        <button type="submit" class="btn btn-success flex-fill"
+                            onclick="return alert('Película ya comprada ¿desea comprar otra?')">
+                        @else
+                            <button type="submit" class="btn btn-success flex-fill"
+                                onclick="return alert('Película sin stock')">
+                    @endif
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-bag-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+                    </svg>
+                    <small>Comprada</small>
+                    </button>
 
-                    <a class="btn btn-success flex-fill" style="cursor: default">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-bag-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
-                        </svg>
-                        <small>Comprada</small>
-                    </a>
-                </div>
+                </form>
             @else
                 @if ($pelicula->stock > 0)
                     <form action="{{ route('Compra.store') }}" class="my-2 d-flex" method="post">
@@ -30,7 +38,8 @@
                 @else
                     <div class="my-2 d-flex">
 
-                        <a class="btn btn-danger flex-fill" style="cursor: default">
+                        <a class="btn btn-danger flex-fill" style="cursor: default"
+                            onclick="return alert('Película sin stock')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-bag-x" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
