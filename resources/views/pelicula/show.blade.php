@@ -1,10 +1,10 @@
 @extends('theme.base')
 @section('content')
     <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    $_SESSION['idMovie'] = $pelicula->id;
+    session([
+        'idMovie' => $pelicula->id,
+    ]);
+    
     ?>
     <style>
         .invisible {
@@ -25,6 +25,7 @@
 
             .img {
                 width: 99%;
+                overflow: inherit;
             }
 
         }
@@ -32,17 +33,16 @@
     </style>
     <div class="container py-5">
         <h1 class="text-center mt-4">{{ $pelicula->name }}</h1>
-
-        @if (isset($_SESSION['estado']))
-            <div class="alert alert-{{ $_SESSION['alert'] }}" role="alert">
-                {{ $_SESSION['estado'] }}
+        @if (session()->exists('estado'))
+            <div class="alert alert-{{ session()->get('alert') }}" role="alert">
+                {{ session()->get('estado') }}
             </div>
         @endif
 
         <?php
-        if (isset($_SESSION['estado'])) {
-            unset($_SESSION['estado']);
-            unset($_SESSION['alert']);
+        if (session()->exists('estado')) {
+            session()->forget('estado');
+            session()->forget('alert');
         }
         ?>
     </div>
@@ -50,7 +50,7 @@
 
 
         <div class="card" style="width: 45rem;">
-            <img loading="lazy" src="{{ asset($pelicula->img) }}" class="rounded mx-auto d-block img">
+            <img loading="lazy" src="{{ asset($pelicula->img) }}" class="img-fluid img">
             <div class="card-body text-center">
                 <p class="card-text"><b>Sinopsis</b></p>
                 <p class="card-text">

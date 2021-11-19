@@ -16,7 +16,7 @@ class LikeController extends Controller
      */
     public function index()
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -26,7 +26,7 @@ class LikeController extends Controller
      */
     public function create()
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -37,19 +37,18 @@ class LikeController extends Controller
      */
     public function store(Request $request)
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        $movieData = \DB::table('peliculas')
-            ->where('id', $request->input('idM'))
-            ->get();
-        $movie = Pelicula::where('id', $request->input("idM"));
-        $movie->update(["likes" => $movieData[0]->likes + 1]);
+        if (session()->exists("idUser")) {
+            $movieData = \DB::table('peliculas')
+                ->where('id', $request->input('idM'))
+                ->get();
+            $movie = Pelicula::where('id', $request->input("idM"));
+            $movie->update(["likes" => $movieData[0]->likes + 1]);
 
-        $si = Like::create([
-            "idUser" => $_SESSION['idUser'],
-            "idMovie" => $request->input("idM")
-        ]);
+            $si = Like::create([
+                "idUser" => session()->get('idUser'),
+                "idMovie" => $request->input("idM")
+            ]);
+        }
         return redirect()->back();
     }
 
@@ -61,7 +60,7 @@ class LikeController extends Controller
      */
     public function show(Like $like)
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -72,7 +71,7 @@ class LikeController extends Controller
      */
     public function edit(Like $like)
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -84,7 +83,7 @@ class LikeController extends Controller
      */
     public function update(Request $request, Like $like)
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -95,13 +94,10 @@ class LikeController extends Controller
      */
     public function destroy($like)
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         $movieData = \DB::table('peliculas')
-            ->where('id', $_SESSION['idMovie'])
+            ->where('id', session()->get('idMovie'))
             ->get();
-        $movie = Pelicula::where('id', $_SESSION['idMovie']);
+        $movie = Pelicula::where('id', session()->get('idUser'));
         $movie->update(["likes" => $movieData[0]->likes - 1]);
 
         DB::table('likes')

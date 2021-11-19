@@ -16,9 +16,15 @@ class CompraController extends Controller
      */
     public function index()
     {
-        $compras = \DB::table('compras')
-            ->get('compras');
-        return view('compra.index')->with('compras', $compras);
+        if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            $compras = \DB::table('compras')
+                ->join('usuarios', 'usuarios.id', '=', 'compras.idUser')
+                ->select('compras.created_at', 'compras.name', 'usuarios.username', 'compras.buyP')
+                ->orderBy('compras.id', 'desc')
+                ->get();
+            return view('compra.index')->with('compras', $compras);
+        }
+        return redirect()->route('Pelicula.index');
     }
 
     /**
@@ -39,37 +45,37 @@ class CompraController extends Controller
      */
     public function store(Request $request)
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
 
-        if (isset($_SESSION['idUser'])) {
+        if (session()->exists("idUser")) {
             $movieData = \DB::table('peliculas')
                 ->where('id', $request->input('idM'))
                 ->get();
             // echo "<pre>";
             // var_dump($movieData[0]);
             // echo "</pre>";
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
             if ($movieData[0]->stock > 0) {
                 Compra::create([
                     "name" => $movieData[0]->name,
                     "buyP" => $movieData[0]->sellP,
-                    "idUser" => $_SESSION['idUser'],
+                    "idUser" => session()->get('idUser'),
                     "idMovie" => $request->input("idM")
                 ]);
                 $movie = Pelicula::where('id', $request->input("idM"));
                 $movie->update(["stock" => $movieData[0]->stock - 1]);
-                $_SESSION["estado"] = "Película comprada con éxito";
-                $_SESSION["alert"] = "success";
+                session([
+                    'estado' => 'Película comprada con éxito',
+                    'alert' => 'success'
+                ]);
+            } else {
+                // echo "<pre>";
+                // var_dump($si);
+                // echo "</pre>";
+
+                session([
+                    'estado' => 'Película sin stock',
+                    'alert' => 'warning'
+                ]);
             }
-            // echo "<pre>";
-            // var_dump($si);
-            // echo "</pre>";
-            $_SESSION["estado"] = "Película sin stock";
-            $_SESSION["alert"] = "warning";
         }
 
 
@@ -84,7 +90,7 @@ class CompraController extends Controller
      */
     public function show(Compra $compra)
     {
-        //
+        return redirect()->back();
     }
 
     /**

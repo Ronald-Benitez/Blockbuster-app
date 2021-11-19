@@ -27,6 +27,10 @@
             justify-content: center;
         }
 
+        .img {
+            overflow: inherit;
+        }
+
         @media (max-width:1200px) {
             .card {
                 width: 32%;
@@ -39,9 +43,9 @@
             }
         }
 
-        @media (max-width:500px) {
+        @media (max-width:450px) {
             .card {
-                width: 99%;
+                width: 100%;
             }
 
             .imgX {
@@ -54,8 +58,10 @@
     <?php
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
-        $_SESSION['typeUser'] = 'user';
-        $_SESSION['idUser'] = 4;
+        session([
+            'typeUser' => 'user',
+            'idUser' => '1',
+        ]);
         // unset($_SESSION['typeUser']);
         // unset($_SESSION['idUser']);
     }
@@ -65,16 +71,16 @@
     <div class="container py-5">
         <h1 class="text-center">Working in progress</h1>
 
-        @if (isset($_SESSION['estado']))
-            <div class="alert alert-{{ $_SESSION['alert'] }}" role="alert">
-                {{ $_SESSION['estado'] }}
+        @if (session()->exists('estado'))
+            <div class="alert alert-{{ session()->get('alert') }}" role="alert">
+                {{ session()->get('estado') }}
             </div>
         @endif
 
         <?php
-        if (isset($_SESSION['estado'])) {
-            unset($_SESSION['estado']);
-            unset($_SESSION['alert']);
+        if (session()->exists('estado')) {
+            session()->forget('estado');
+            session()->forget('alert');
         }
         ?>
     </div>
@@ -85,7 +91,7 @@
                 <div class="card text-center">
 
                     <a href="{{ route('Pelicula.show', $pelicula->id) }}" class="btn btn-config mt-2 imgX">
-                        <img loading="lazy" src="{{ asset($pelicula->img) }}" class="card-img-top " alt="...">
+                        <img loading="lazy" src="{{ asset($pelicula->img) }}" class="img-fluid img " alt="...">
                     </a>
                     <div class="card-body">
                         <a href="{{ route('Pelicula.show', $pelicula->id) }}" class="btn btn-config">
@@ -106,7 +112,7 @@
                             </a>
 
 
-                            @if (isset($_SESSION['typeUser']) && $_SESSION['typeUser'] == 'admin')
+                            @if (session()->exists('idUser') && session()->get('typeUser') == 'admin')
                                 <a href="{{ route('Pelicula.edit', $pelicula->id) }}" class="btn btn-warning">
                                     <b>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
