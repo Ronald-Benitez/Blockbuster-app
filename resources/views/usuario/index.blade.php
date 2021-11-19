@@ -1,7 +1,7 @@
 @extends('theme.base')
 
 @section('content')
-<div>XD</div>
+<div>Papu papu Papu</div>
 
 
 <div class="container">
