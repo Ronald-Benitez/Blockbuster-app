@@ -59,8 +59,8 @@
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
         session([
-            'typeUser' => 'admin',
-            'idUser' => '1',
+            'typeUser' => 'user',
+            'idUser' => '4',
         ]);
         // unset($_SESSION['typeUser']);
         // unset($_SESSION['idUser']);
