@@ -30,11 +30,28 @@
         }
 
     </style>
-    <div class="d-flex justify-content-center mt-4 pt-4">
+    <div class="container py-5">
+        <h1 class="text-center mt-4">{{ $pelicula->name }}</h1>
+
+        @if (isset($_SESSION['estado']))
+            <div class="alert alert-{{ $_SESSION['alert'] }}" role="alert">
+                {{ $_SESSION['estado'] }}
+            </div>
+        @endif
+
+        <?php
+        if (isset($_SESSION['estado'])) {
+            unset($_SESSION['estado']);
+            unset($_SESSION['alert']);
+        }
+        ?>
+    </div>
+    <div class="d-flex justify-content-center ">
+
+
         <div class="card" style="width: 45rem;">
-            <img src="{{ asset($pelicula->img) }}" class="rounded mx-auto d-block img">
+            <img loading="lazy" src="{{ asset($pelicula->img) }}" class="rounded mx-auto d-block img">
             <div class="card-body text-center">
-                <h3 class="card-title">{{ $pelicula->name }}</h3>
                 <p class="card-text"><b>Sinopsis</b></p>
                 <p class="card-text">
                     {{ $pelicula->synopsis }}
@@ -67,5 +84,16 @@
             </div>
         </div>
     </div>
+
+@endsection
+@section('script')
+    <script>
+        $(function() {
+            setTimeout(() => {
+                $(".alert").remove();
+            }, 4000);
+
+        });
+    </script>
 
 @endsection
