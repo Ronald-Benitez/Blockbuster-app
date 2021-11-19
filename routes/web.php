@@ -31,4 +31,4 @@ Route::resource('Compra', CompraController::class);
 
 Route::get('login', [LoginController::class, 'index']);
 Route::post('login', [LoginController::class, 'loguear'])->name('login.loguear');
-Route::post('logout', [LoginController::class, 'logout'])->name('login.logout');
+Route::get('logout', [LoginController::class, 'logout'])->name('login.logout');
