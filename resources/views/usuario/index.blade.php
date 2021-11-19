@@ -1,6 +1,7 @@
 @extends('theme.base')
 
 @section('content')
+
 <div class="h2">LISTA DE USUARIOS</div>
 @php
 session_start()
@@ -14,7 +15,6 @@ unset($_SESSION["estado"]);
 unset($_SESSION["alert"]);
 @endphp
 @endif
-
 
 <div class="container">
     <div class="row">

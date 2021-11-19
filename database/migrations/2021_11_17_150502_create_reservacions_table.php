@@ -15,8 +15,11 @@ class CreateReservacionsTable extends Migration
     {
         Schema::create('reservacions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idUser')->unique();
-            $table->unsignedBigInteger('idMovie')->unique();
+            $table->unsignedBigInteger('idUser');
+            $table->unsignedBigInteger('idMovie');
+            $table->integer('state');
+            $table->time('begin');
+            $table->time('finish');
         });
     }
 
