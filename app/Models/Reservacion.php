@@ -9,4 +9,5 @@ class Reservacion extends Model
 {
     use HasFactory;
     protected $fillable = ['idUser', 'idMovie', 'state', 'begin', 'finish'];
+    public $timestamps = false;
 }
