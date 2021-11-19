@@ -97,7 +97,7 @@ class LikeController extends Controller
         $movieData = \DB::table('peliculas')
             ->where('id', session()->get('idMovie'))
             ->get();
-        $movie = Pelicula::where('id', session()->get('idUser'));
+        $movie = Pelicula::where('id', session()->get('idMovie'));
         $movie->update(["likes" => $movieData[0]->likes - 1]);
 
         DB::table('likes')

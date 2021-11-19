@@ -60,7 +60,7 @@
         session_start();
         session([
             'typeUser' => 'user',
-            'idUser' => '1',
+            'idUser' => '4',
         ]);
         // unset($_SESSION['typeUser']);
         // unset($_SESSION['idUser']);
