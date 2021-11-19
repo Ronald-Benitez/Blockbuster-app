@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pelicula;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class help
@@ -175,7 +176,7 @@ class PeliculaController extends Controller
         }
         $_SESSION["estado"] = "Película actualizada con éxito";
         $_SESSION["alert"] = "success";
-        return redirect()->route('Pelicula.index');
+        return redirect()->route('Pelicula.show', $pelicula);
     }
 
     /**
@@ -184,8 +185,16 @@ class PeliculaController extends Controller
      * @param  \App\Models\Pelicula  $pelicula
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pelicula $pelicula)
+    public function destroy($pelicula)
     {
-        //
+        DB::table('peliculas')
+            ->where('id', $pelicula)
+            ->delete();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $_SESSION["estado"] = "Eliminado éxitoso";
+        $_SESSION["alert"] = "danger";
+        return redirect()->route('Pelicula.index');
     }
 }

@@ -74,16 +74,17 @@
         </div>
 
 
-        <div class="form-group">
+        <div class="container d-flex flex-column">
             @if (isset($pelicula))
-                <button type="submit" class="btn btn-outline-dark m-2">
+                <button type="submit" class="btn btn-outline-dark d-block my-2 flex-fill">
                     Actualizar película
                 </button>
             @else
-                <button type="submit" class="btn btn-outline-dark m-2">
+                <button type="submit" class="btn btn-outline-dark d-block my-2">
                     Guardar película
                 </button>
             @endif
+            <a href="{{ url()->previous() }}" class="btn btn-outline-success d-block my-2">Regresar</a>
 
         </div>
 
