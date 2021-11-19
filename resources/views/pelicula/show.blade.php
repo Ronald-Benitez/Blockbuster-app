@@ -31,12 +31,16 @@
         }
 
     </style>
-    <div class="container py-5">
+    <div class="container text-center py-5">
         <h1 class="text-center mt-4">{{ $pelicula->name }}</h1>
         @if (session()->exists('estado'))
             <div class="alert alert-{{ session()->get('alert') }}" role="alert">
                 {{ session()->get('estado') }}
             </div>
+        @endif
+        @if (isset($alquiler) && !empty($alquiler) && $alquiler->state == 1)
+            <small class="text-success m-2">Pelicula rentada</small><br>
+            <small class="text-success m-2">Fecha de entrega: {{ $alquiler->finish }}</small>
         @endif
 
         <?php
@@ -83,6 +87,7 @@
                 <a href="{{ route('Pelicula.index') }}" class="btn btn-outline-success d-block my-2">Regresar</a>
             </div>
         </div>
+
     </div>
 
 @endsection

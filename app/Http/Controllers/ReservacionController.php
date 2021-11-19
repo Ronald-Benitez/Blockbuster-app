@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservacion;
+use App\Models\Pelicula;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ReservacionController extends Controller
 {
@@ -35,7 +37,41 @@ class ReservacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (session()->exists("idUser")) {
+            $movieData = \DB::table('peliculas')
+                ->where('id', $request->input('idM'))
+                ->get();
+            // echo "<pre>";
+            // var_dump($movieData[0]);
+            // echo "</pre>";
+            if ($movieData[0]->stock > 0) {
+                Reservacion::create([
+                    "idUser" => session()->get('idUser'),
+                    "idMovie" => $request->input("idM"),
+                    "state" => "1",
+                    "begin" => Carbon::now(),
+                    "finish" => Carbon::now()->addMonth()
+                ]);
+                $movie = Pelicula::where('id', $request->input("idM"));
+                $movie->update(["stock" => $movieData[0]->stock - 1]);
+                session([
+                    'estado' => 'Película rentada con éxito',
+                    'alert' => 'success'
+                ]);
+            } else {
+                // echo "<pre>";
+                // var_dump($si);
+                // echo "</pre>";
+
+                session([
+                    'estado' => 'Película sin stock',
+                    'alert' => 'warning'
+                ]);
+            }
+        }
+
+
+        return redirect()->back();
     }
 
     /**
@@ -78,8 +114,20 @@ class ReservacionController extends Controller
      * @param  \App\Models\Reservacion  $reservacion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reservacion $reservacion)
+    public function destroy($reservacion)
     {
-        //
+        $movieData = \DB::table('peliculas')
+            ->where('id', session()->get('idMovie'))
+            ->get();
+        $movie = Pelicula::where('id', session()->get('idMovie'));
+        $movie->update(["stock" => $movieData[0]->stock + 1]);
+
+        $reser = Reservacion::where('id', $reservacion);
+        $reser->update(["state" => 2]);
+        session([
+            'estado' => 'Película entregada con éxito',
+            'alert' => 'success'
+        ]);
+        return redirect()->back();
     }
 }

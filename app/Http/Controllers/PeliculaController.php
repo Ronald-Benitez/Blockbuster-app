@@ -110,9 +110,10 @@ class PeliculaController extends Controller
                 ->first();
 
             $alquiler = \DB::table('reservacions')
-                ->select('id')
+                ->select('id', 'finish', "state")
                 ->where('idUser', '=', session()->get('idUser'))
                 ->where('idMovie', '=', $pelicula)
+                ->orderBy('id', "desc")
                 ->first();
             // echo "<pre>";
             // var_dump($likes[0]);
