@@ -3,6 +3,15 @@
     
 
 <div class="container mt-4">
+    @if (isset($_SESSION['estado']))
+    <div class="alert alert-{{ $_SESSION['alert'] }}" role="alert">
+      {{ $_SESSION['estado'] }}
+    </div>
+    @php
+      unset($_SESSION["estado"]); 
+      unset($_SESSION["alert"]); 
+    @endphp            
+  @endif
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <button class="nav-link active" id="nav-Datos-tab" data-bs-toggle="tab" data-bs-target="#nav-Datos" type="button" role="tab" aria-controls="nav-Datos" aria-selected="true">Datos personales</button>
@@ -45,4 +54,13 @@
   </div>
 </div>
 
+@endsection
+@section('script')
+    <script>
+        $(function() {
+            setTimeout(() => {
+                $(".alert").remove();
+            }, 4000);
+        });
+    </script>
 @endsection
