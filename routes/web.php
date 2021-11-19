@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompraController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PeliculaController;
 use App\Http\Controllers\ReservacionController;
@@ -25,3 +26,4 @@ Route::resource('Like', LikeController::class);
 Route::resource('Pelicula', PeliculaController::class);
 Route::resource('Reservacion', ReservacionController::class);
 Route::resource('Usuario', UsuarioController::class);
+Route::resource('Compra', CompraController::class);
