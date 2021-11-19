@@ -54,10 +54,10 @@
     <?php
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
-        // $_SESSION['typeUser'] = 'user';
-        // $_SESSION['idUser'] = 2;
-        unset($_SESSION['typeUser']);
-        unset($_SESSION['idUser']);
+        $_SESSION['typeUser'] = 'admin';
+        $_SESSION['idUser'] = 3;
+        // unset($_SESSION['typeUser']);
+        // unset($_SESSION['idUser']);
     }
     
     $count = 0;
