@@ -57,4 +57,26 @@ class FiltrosController extends Controller
         }
         return redirect()->back();
     }
+
+    public function likeThis(Request $request)
+    {
+        $request->validate([
+            'search' => 'required'
+        ]);
+
+        $pelicula = \DB::table('peliculas')
+            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
+            ->where('name', 'like', $request->input('search'))
+            ->get();
+
+        if (!empty($pelicula[0])) {
+            return view('pelicula.index')->with('peliculas', $pelicula);
+        } else {
+            session([
+                'estado' => 'Pelicula no encontrada',
+                'alert' => 'warning'
+            ]);
+            return redirect()->back();
+        }
+    }
 }
