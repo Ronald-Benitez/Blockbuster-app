@@ -56,16 +56,7 @@
 
     </style>
     <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-        session([
-            'typeUser' => 'user',
-            'idUser' => '1',
-        ]);
-        // unset($_SESSION['typeUser']);
-        // unset($_SESSION['idUser']);
-    }
-    
+        
     $count = 0;
     ?>
     <div class="container py-5">
