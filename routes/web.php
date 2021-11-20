@@ -38,3 +38,5 @@ Route::get('Filtro', [FiltrosController::class, 'index']);
 Route::get('Disponibles', [FiltrosController::class, 'disponibles'])->name('Filtro.disponibles');
 Route::get('SinStock', [FiltrosController::class, 'sinStock'])->name('Filtro.sinStock');
 Route::post('Buscar', [FiltrosController::class, 'likeThis'])->name('Filtro.search');
+Route::get('Populares', [FiltrosController::class, 'byPopulares'])->name('Filtro.populares');
+Route::get('Default', [FiltrosController::class, 'byNombre'])->name('Filtro.nombre');

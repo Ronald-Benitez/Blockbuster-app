@@ -12,6 +12,7 @@ class FiltrosController extends Controller
             $pelicula = \DB::table('peliculas')
                 ->get();
 
+
             return view('pelicula.index-compact')->with('peliculas', $pelicula);
         } else {
             session([
@@ -20,6 +21,28 @@ class FiltrosController extends Controller
             ]);
         }
         return redirect()->back();
+    }
+
+    public function byPopulares()
+    {
+        $pelicula = \DB::table('peliculas')
+            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes')
+            ->where('stock', '>', 0)
+            ->orderBy('likes', 'desc')
+            ->get();
+
+        return view('pelicula.index')->with('peliculas', $pelicula);
+    }
+
+    public function byNombre()
+    {
+        $pelicula = \DB::table('peliculas')
+            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes')
+            ->where('stock', '>', 0)
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return view('pelicula.index')->with('peliculas', $pelicula);
     }
 
     public function disponibles()
@@ -82,9 +105,9 @@ class FiltrosController extends Controller
             ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
             ->where('name', 'like', $request->input('search'))
             ->get();
-
+        $aux = 0;
         if (!empty($pelicula[0])) {
-            return view('pelicula.index')->with('peliculas', $pelicula);
+            return view('pelicula.index')->with('peliculas', $pelicula)->with('aux', $aux);
         } else {
             session([
                 'estado' => 'Pelicula no encontrada',

@@ -1,6 +1,6 @@
 @extends('theme.base')
 
-@section('content')
+@section('css')
     <style>
         .btn-config:hover {
             border: 1px solid #346751;
@@ -45,7 +45,7 @@
 
         @media (max-width:450px) {
             .card {
-                width: 100%;
+                width: 98%;
             }
 
             .imgX {
@@ -55,8 +55,11 @@
         }
 
     </style>
+@endsection
 
-    <div class="container py-5">
+@section('content')
+
+    <div class="container py-5 mt-5">
 
         @if (session()->exists('estado'))
             <div class="alert alert-{{ session()->get('alert') }}" role="alert">
@@ -71,7 +74,7 @@
         }
         ?>
     </div>
-    <div class="container">
+    <div class="container mb-5">
         <div class="row d-flex justify-content-around">
             @foreach ($peliculas as $pelicula)
 
@@ -134,6 +137,15 @@
 
     </div>
 @endsection
+
+@section('footer')
+    @if (isset($aux))
+        @include('theme.footer-index')
+    @else
+        @include('theme.footer-home')
+    @endif
+@endsection
+
 @section('script')
     <script>
         $(function() {
