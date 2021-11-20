@@ -37,7 +37,7 @@
                     @enderror
                   </div>
             <div class="mb-3">
-                  <button type="submit" class="btn btn-primary mt-3">Registrar</button>
+                  <button type="submit" class="btn btn-primary mt-3">Ingresar</button>
             </form>
         </div>
         
