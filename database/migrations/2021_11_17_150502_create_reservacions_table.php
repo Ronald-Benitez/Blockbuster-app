@@ -18,8 +18,8 @@ class CreateReservacionsTable extends Migration
             $table->unsignedBigInteger('idUser');
             $table->unsignedBigInteger('idMovie');
             $table->integer('state');
-            $table->time('begin');
-            $table->time('finish');
+            $table->dateTime('begin');
+            $table->dateTime('finish');
         });
     }
 

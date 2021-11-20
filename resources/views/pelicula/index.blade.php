@@ -55,10 +55,6 @@
         }
 
     </style>
-    <?php
-        
-    $count = 0;
-    ?>
     <div class="container py-5">
         <h1 class="text-center">Working in progress</h1>
 

@@ -17,7 +17,7 @@ class CreatePeliculasTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('synopsis');
+            $table->longText('synopsis');
             $table->string('img');
             $table->integer('likes');
             $table->float('sellP');
