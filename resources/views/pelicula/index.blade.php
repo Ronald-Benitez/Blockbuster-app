@@ -55,19 +55,7 @@
         }
 
     </style>
-    <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-        session([
-            'typeUser' => 'user',
-            'idUser' => '4',
-        ]);
-        // unset($_SESSION['typeUser']);
-        // unset($_SESSION['idUser']);
-    }
-    
-    $count = 0;
-    ?>
+
     <div class="container py-5">
         <h1 class="text-center">Working in progress</h1>
 

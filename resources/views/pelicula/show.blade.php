@@ -39,8 +39,15 @@
             </div>
         @endif
         @if (isset($alquiler) && !empty($alquiler) && $alquiler->state == 1)
-            <small class="text-success m-2">Pelicula rentada</small><br>
-            <small class="text-success m-2">Fecha de entrega: {{ $alquiler->finish }}</small>
+            @if ($retraso > 0)
+                <small class="text-danger m-2">Pelicula rentada</small><br>
+                <small class="text-danger m-2">Entrega retrasada por {{ $retraso }} días</small><br>
+                <small class="text-danger m-2">Fecha de entrega: {{ $alquiler->finish }}</small>
+            @else
+                <small class="text-success m-2">Pelicula rentada</small><br>
+                <small class="text-success m-2">Fecha de entrega: {{ $alquiler->finish }}</small>
+            @endif
+
         @endif
 
         <?php

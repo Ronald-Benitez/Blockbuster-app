@@ -6,6 +6,7 @@ use App\Models\Pelicula;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 class help
 {
@@ -97,6 +98,8 @@ class PeliculaController extends Controller
             ->get();
 
         if (session()->exists('idUser')) {
+            $fecha = Carbon::now();
+
             $likes = \DB::table('likes')
                 ->select('id')
                 ->where('idUser', '=', session()->get('idUser'))
@@ -118,12 +121,19 @@ class PeliculaController extends Controller
             // echo "<pre>";
             // var_dump($likes[0]);
             // echo "</pre>";
-
+            $retraso = 0;
+            if (isset($alquiler->finish)) {
+                $fecha2 = Carbon::createFromDate($alquiler->finish);
+                if ($fecha2->lessThan($fecha)) {
+                    $retraso = $fecha2->diffInDays($fecha);
+                }
+            }
             return view('pelicula.show')
                 ->with('pelicula', $movie[0])
                 ->with("like", $likes)
                 ->with("compra", $compra)
-                ->with("alquiler", $alquiler);
+                ->with("alquiler", $alquiler)
+                ->with("retraso", $retraso);
         }
 
         return view('pelicula.show')->with('pelicula', $movie[0]);

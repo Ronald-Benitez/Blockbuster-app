@@ -1,4 +1,4 @@
-@if (isset($_SESSION['idUser']))
+@if (session()->exists('idUser'))
     @if (isset($like) && !empty($like))
         <form action="{{ route('Like.destroy', $like->id) }}" class="my-2" method="post">
             @method("delete")

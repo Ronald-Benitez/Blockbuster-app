@@ -20,6 +20,8 @@ class CreateReservacionsTable extends Migration
             $table->integer('state');
             $table->dateTime('begin');
             $table->dateTime('finish');
+            $table->float('buyP');
+            $table->string('name');
         });
     }
 
