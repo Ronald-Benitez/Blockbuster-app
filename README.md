@@ -6,6 +6,7 @@
 -   Nehemias Adonay Morales Reyes MR19088.
 -   Bryan Alexander Mata Cáceres MC19038.
 
+
 ## Proyecto final de TPI
 
 Para no tener problemas con las images se debe de ir a ala carpeta public
