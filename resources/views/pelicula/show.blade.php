@@ -31,7 +31,7 @@
         }
 
     </style>
-    <div class="container text-center py-5">
+    <div class="container text-center my-4">
         <h1 class="text-center mt-4">{{ $pelicula->name }}</h1>
         @if (session()->exists('estado'))
             <div class="alert alert-{{ session()->get('alert') }}" role="alert">
@@ -60,7 +60,7 @@
     <div class="d-flex justify-content-center ">
 
 
-        <div class="card" style="width: 45rem;">
+        <div class="card mb-5" style="width: 45rem;">
             <img loading="lazy" src="{{ asset($pelicula->img) }}" class="img-fluid img">
             <div class="card-body text-center">
                 <p class="card-text"><b>Sinopsis</b></p>
@@ -90,14 +90,17 @@
                 </div>
 
                 @include("pelicula.sell-reser")
-
-                <a href="{{ route('Pelicula.index') }}" class="btn btn-outline-success d-block my-2">Regresar</a>
             </div>
         </div>
 
     </div>
 
 @endsection
+
+@section('footer')
+    @include('theme.footer-index')
+@endsection
+
 @section('script')
     <script>
         $(function() {

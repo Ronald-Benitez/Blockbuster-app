@@ -19,7 +19,7 @@ class ReservacionController extends Controller
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
             $reservaciones = \DB::table('reservacions')
                 ->join('usuarios', 'usuarios.id', '=', 'reservacions.idUser')
-                ->select('reservacions.begin', 'reservacions.finish', 'reservacions.name', 'usuarios.username', 'reservacions.buyP', 'reservacions.state')
+                ->select('reservacions.id', 'reservacions.begin', 'reservacions.finish', 'reservacions.name', 'usuarios.username', 'reservacions.buyP', 'reservacions.state')
                 ->orderBy('reservacions.id', 'desc')
                 ->get();
             return view('reservacion.index')->with('reservaciones', $reservaciones);

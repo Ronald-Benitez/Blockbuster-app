@@ -19,7 +19,7 @@ class CompraController extends Controller
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
             $compras = \DB::table('compras')
                 ->join('usuarios', 'usuarios.id', '=', 'compras.idUser')
-                ->select('compras.created_at', 'compras.name', 'usuarios.username', 'compras.buyP')
+                ->select('compras.id', 'compras.created_at', 'compras.name', 'usuarios.username', 'compras.buyP')
                 ->orderBy('compras.id', 'desc')
                 ->get();
             return view('compra.index')->with('compras', $compras);
