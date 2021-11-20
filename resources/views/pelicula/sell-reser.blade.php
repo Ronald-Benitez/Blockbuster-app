@@ -8,7 +8,7 @@
 
                     @if ($pelicula->stock > 0)
                         <button type="submit" class="btn btn-success flex-fill"
-                            onclick="return alert('Película ya comprada ¿desea comprar otra?')">
+                            onclick="return confirm('Película ya comprada ¿desea comprar otra?')">
                         @else
                             <button type="" class="btn btn-success flex-fill"
                                 onclick="return alert('Película sin stock')">
@@ -57,22 +57,35 @@
         {{-- Renta --}}
         <div class="col-6">
             @if (isset($alquiler) && !empty($alquiler) && $alquiler->state == 1)
-                <form action="{{ route('Reservacion.destroy', $alquiler->id) }}" method="post" class="my-2 d-flex"
-                    method="post">
-                    @method("delete")
-                    @csrf
+                @if ($retraso > 0)
+                    <div class="d-flex my-2">
+                        <a href="{{ route('Reservacion.show', $alquiler->id) }}" class="btn btn-success flex-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-bag-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+                            </svg>
+                            <small>Regresar</small>
+                        </a>
+                    </div>
+                @else
+                    <form action="{{ route('Reservacion.show', $alquiler->id) }}" method="post" class="my-2 d-flex"
+                        method="post">
+                        @method("delete")
+                        @csrf
 
-                    <button type="submit" class="btn btn-success flex-fill">
+                        <button type="submit" class="btn btn-success flex-fill">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-bag-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
-                        </svg>
-                        <small>Regresar</small>
-                    </button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-bag-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+                            </svg>
+                            <small>Regresar</small>
+                        </button>
 
-                </form>
+                    </form>
+                @endif
             @else
                 @if ($pelicula->stock > 0)
                     <form action="{{ route('Reservacion.store') }}" class="my-2 d-flex" method="post">

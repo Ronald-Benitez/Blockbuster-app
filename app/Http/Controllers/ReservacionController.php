@@ -16,7 +16,15 @@ class ReservacionController extends Controller
      */
     public function index()
     {
-        //
+        if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            $reservaciones = \DB::table('reservacions')
+                ->join('usuarios', 'usuarios.id', '=', 'reservacions.idUser')
+                ->select('reservacions.begin', 'reservacions.finish', 'reservacions.name', 'usuarios.username', 'reservacions.buyP', 'reservacions.state')
+                ->orderBy('reservacions.id', 'desc')
+                ->get();
+            return view('reservacion.index')->with('reservaciones', $reservaciones);
+        }
+        return redirect()->route('Pelicula.index');
     }
 
     /**
@@ -50,7 +58,9 @@ class ReservacionController extends Controller
                     "idMovie" => $request->input("idM"),
                     "state" => "1",
                     "begin" => Carbon::now(),
-                    "finish" => Carbon::now()->addMonth()
+                    "finish" => Carbon::now()->addMonth(),
+                    "buyP" => $movieData[0]->reservationP,
+                    "name" => $movieData[0]->name
                 ]);
                 $movie = Pelicula::where('id', $request->input("idM"));
                 $movie->update(["stock" => $movieData[0]->stock - 1]);
@@ -80,9 +90,25 @@ class ReservacionController extends Controller
      * @param  \App\Models\Reservacion  $reservacion
      * @return \Illuminate\Http\Response
      */
-    public function show(Reservacion $reservacion)
+    public function show($reservacion)
     {
-        //
+        if (session()->exists("idUser")) {
+            $alquiler = \DB::table('reservacions')
+                ->where('id', '=', $reservacion)
+                ->first();
+            // echo "<pre>";
+            // var_dump($likes[0]);
+            // echo "</pre>";
+            $fecha = Carbon::now();
+            if (isset($alquiler->finish)) {
+                $fecha2 = Carbon::createFromDate($alquiler->finish);
+                $retraso = $fecha2->diffInDays($fecha);
+                if ($fecha2->lessThan($fecha) && $retraso > 0) {
+                    return view('reservacion.show')->with('alquiler', $alquiler)->with('retraso', $retraso);
+                }
+            }
+        }
+        return redirect()->back();
     }
 
     /**
@@ -128,6 +154,6 @@ class ReservacionController extends Controller
             'estado' => 'Película entregada con éxito',
             'alert' => 'success'
         ]);
-        return redirect()->back();
+        return redirect()->route('Pelicula.show', session()->get('idMovie'));
     }
 }
