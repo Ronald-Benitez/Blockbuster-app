@@ -48,8 +48,8 @@ class LoginController extends Controller
     }
     public function logout(){
         session()->flush();
-        session()->put('alert', "success");
-        session()->put('estado', '<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Eso tilin</a>');
+        session()->put('alert', 'success');
+        session()->put('estado', '¡ Gracias por visitarnos !');  
         return redirect()->route('Pelicula.index');
 
     }
