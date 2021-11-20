@@ -30,6 +30,7 @@ class PeliculaController extends Controller
         $pelicula = \DB::table('peliculas')
             ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes')
             ->where('stock', '>', 0)
+            ->orderBy('name', 'asc')
             ->get();
 
         return view('pelicula.index')->with('peliculas', $pelicula);
@@ -149,11 +150,6 @@ class PeliculaController extends Controller
                 ->with("compra", $compra)
                 ->with("alquiler", $alquiler)
                 ->with("retraso", $retraso);
-        } else {
-            session([
-                'estado' => 'Acceso denegado',
-                'alert' => 'danger'
-            ]);
         }
 
         return view('pelicula.show')->with('pelicula', $movie[0]);
