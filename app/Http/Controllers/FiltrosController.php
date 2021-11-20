@@ -30,7 +30,14 @@ class FiltrosController extends Controller
                 ->where('stock', '>', 0)
                 ->get();
 
-            return view('pelicula.index')->with('peliculas', $pelicula);
+            if (!empty($pelicula[0])) {
+                return view('pelicula.index')->with('peliculas', $pelicula);
+            } else {
+                session([
+                    'estado' => 'No hay películas disponibles',
+                    'alert' => 'warning'
+                ]);
+            }
         } else {
             session([
                 'estado' => 'Acceso denegado',
@@ -48,7 +55,14 @@ class FiltrosController extends Controller
                 ->where('stock', '<', 1)
                 ->get();
 
-            return view('pelicula.index')->with('peliculas', $pelicula);
+            if (!empty($pelicula[0])) {
+                return view('pelicula.index')->with('peliculas', $pelicula);
+            } else {
+                session([
+                    'estado' => 'No hay películas sin stock',
+                    'alert' => 'warning'
+                ]);
+            }
         } else {
             session([
                 'estado' => 'Acceso denegado',
