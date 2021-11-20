@@ -8,7 +8,7 @@
 
 @section('content')
 
-    <div class="card my-5">
+    <div class="card my-5" style="width:99%">
         <div class="card-title text-center my-4">
             <h3>Registro de ventas</h3>
         </div>
@@ -59,7 +59,16 @@
                 responsive: true,
                 autoWidth: false,
                 "language": {
-                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                    "lengthMenu": "Mostrar" +
+                        `<select>
+                        <option value = "5">5</option>
+                        <option value = "10">10</option>
+                        <option value = "15">25</option>
+                        <option value = "50">50</option>
+                        <option value = "-1">All</option>
+
+                        </select>` +
+                        "registros por página",
                     "zeroRecords": "Sin resultados",
                     "info": "Mostrando página _PAGE_ de _PAGES_",
                     "infoEmpty": "Sin registros",
