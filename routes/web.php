@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompraController;
+use App\Http\Controllers\FiltrosController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PeliculaController;
 use App\Http\Controllers\ReservacionController;
@@ -32,3 +33,7 @@ Route::resource('Compra', CompraController::class);
 Route::get('login', [LoginController::class, 'index']);
 Route::post('login', [LoginController::class, 'loguear'])->name('login.loguear');
 Route::get('logout', [LoginController::class, 'logout'])->name('login.logout');
+
+Route::get('Filtro', [FiltrosController::class, 'index']);
+Route::get('Disponibles', [FiltrosController::class, 'disponibles'])->name('Filtro.disponibles');
+Route::get('SinStock', [FiltrosController::class, 'sinStock'])->name('Filtro.sinStock');

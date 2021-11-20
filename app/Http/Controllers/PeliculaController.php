@@ -215,6 +215,6 @@ class PeliculaController extends Controller
             'estado' => 'Película eliminada con éxito',
             'alert' => 'danger'
         ]);
-        return redirect()->route('Pelicula.index');
+        return redirect()->back();
     }
 }
