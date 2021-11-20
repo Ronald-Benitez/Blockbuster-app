@@ -1,7 +1,7 @@
 @extends('theme.base')
 @section('content')
 
-    <div class="d-flex justify-content-center mt-4">
+    <div class="d-flex justify-content-center my-5">
 
         <div class="card text-center">
             <div class="card-header h4">
@@ -22,11 +22,13 @@
                             <small>Aceptar</small>
                         </button>
                     </form>
-                    <a href="{{ route('Pelicula.show', session()->get('idMovie')) }}"
-                        class="btn btn-outline-success d-block my-2">Cancelar</a>
                 </div>
             </div>
 
 
         </div>
-    @endsection
+    </div>
+@endsection
+@section('footer')
+    @include('theme.footer-previous')
+@endsection

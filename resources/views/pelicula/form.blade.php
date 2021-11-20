@@ -16,7 +16,7 @@
             <p class="fs-1 text-center ">Registro de película</p>
         </div>
     @endif
-    <div class="container d-flex justify-content-center">
+    <div class="container d-flex justify-content-center my-5">
         @if (isset($pelicula))
             <form action="{{ route('Pelicula.update', $pelicula->id) }}" method="post" enctype="multipart/form-data">
                 @method('PUT')
@@ -84,10 +84,13 @@
                     Guardar película
                 </button>
             @endif
-            <a href="{{ url()->previous() }}" class="btn btn-outline-success d-block my-2">Regresar</a>
 
         </div>
 
         </form>
     </div>
+@endsection
+
+@section('footer')
+    @include('theme.footer-previous')
 @endsection
