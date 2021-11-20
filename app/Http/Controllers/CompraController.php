@@ -23,7 +23,13 @@ class CompraController extends Controller
                 ->orderBy('compras.id', 'desc')
                 ->get();
             return view('compra.index')->with('compras', $compras);
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
         }
+
         return redirect()->route('Pelicula.index');
     }
 
@@ -76,6 +82,11 @@ class CompraController extends Controller
                     'alert' => 'warning'
                 ]);
             }
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
         }
 
 

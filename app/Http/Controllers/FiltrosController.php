@@ -8,29 +8,53 @@ class FiltrosController extends Controller
 {
     public function index()
     {
-        $pelicula = \DB::table('peliculas')
-            ->get();
+        if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            $pelicula = \DB::table('peliculas')
+                ->get();
 
-        return view('pelicula.index-compact')->with('peliculas', $pelicula);
+            return view('pelicula.index-compact')->with('peliculas', $pelicula);
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
+        }
+        return redirect()->back();
     }
 
     public function disponibles()
     {
-        $pelicula = \DB::table('peliculas')
-            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
-            ->where('stock', '>', 0)
-            ->get();
+        if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            $pelicula = \DB::table('peliculas')
+                ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
+                ->where('stock', '>', 0)
+                ->get();
 
-        return view('pelicula.index')->with('peliculas', $pelicula);
+            return view('pelicula.index')->with('peliculas', $pelicula);
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
+        }
+        return redirect()->back();
     }
 
     public function sinStock()
     {
-        $pelicula = \DB::table('peliculas')
-            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
-            ->where('stock', '<', 1)
-            ->get();
+        if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            $pelicula = \DB::table('peliculas')
+                ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
+                ->where('stock', '<', 1)
+                ->get();
 
-        return view('pelicula.index')->with('peliculas', $pelicula);
+            return view('pelicula.index')->with('peliculas', $pelicula);
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
+        }
+        return redirect()->back();
     }
 }

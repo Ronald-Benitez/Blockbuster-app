@@ -23,6 +23,11 @@ class ReservacionController extends Controller
                 ->orderBy('reservacions.id', 'desc')
                 ->get();
             return view('reservacion.index')->with('reservaciones', $reservaciones);
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
         }
         return redirect()->route('Pelicula.index');
     }
@@ -34,7 +39,7 @@ class ReservacionController extends Controller
      */
     public function create()
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -78,6 +83,11 @@ class ReservacionController extends Controller
                     'alert' => 'warning'
                 ]);
             }
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
         }
 
 
@@ -107,6 +117,11 @@ class ReservacionController extends Controller
                     return view('reservacion.show')->with('alquiler', $alquiler)->with('retraso', $retraso);
                 }
             }
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
         }
         return redirect()->back();
     }
@@ -119,7 +134,7 @@ class ReservacionController extends Controller
      */
     public function edit(Reservacion $reservacion)
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -131,7 +146,7 @@ class ReservacionController extends Controller
      */
     public function update(Request $request, Reservacion $reservacion)
     {
-        //
+        return redirect()->back();
     }
 
     /**
@@ -142,18 +157,25 @@ class ReservacionController extends Controller
      */
     public function destroy($reservacion)
     {
-        $movieData = \DB::table('peliculas')
-            ->where('id', session()->get('idMovie'))
-            ->get();
-        $movie = Pelicula::where('id', session()->get('idMovie'));
-        $movie->update(["stock" => $movieData[0]->stock + 1]);
+        if (session()->exists("idUser")) {
+            $movieData = \DB::table('peliculas')
+                ->where('id', session()->get('idMovie'))
+                ->get();
+            $movie = Pelicula::where('id', session()->get('idMovie'));
+            $movie->update(["stock" => $movieData[0]->stock + 1]);
 
-        $reser = Reservacion::where('id', $reservacion);
-        $reser->update(["state" => 2]);
-        session([
-            'estado' => 'Película entregada con éxito',
-            'alert' => 'success'
-        ]);
-        return redirect()->route('Pelicula.show', session()->get('idMovie'));
+            $reser = Reservacion::where('id', $reservacion);
+            $reser->update(["state" => 2]);
+            session([
+                'estado' => 'Película entregada con éxito',
+                'alert' => 'success'
+            ]);
+            return redirect()->route('Pelicula.show', session()->get('idMovie'));
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
+        }
     }
 }

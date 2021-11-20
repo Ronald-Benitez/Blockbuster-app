@@ -42,7 +42,15 @@ class PeliculaController extends Controller
      */
     public function create()
     {
-        return view('pelicula.form')->with("data", new help);
+        if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            return view('pelicula.form')->with("data", new help);
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
+        }
+        return redirect()->back();
     }
 
     /**
@@ -53,35 +61,42 @@ class PeliculaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'file' => 'required|image',
-            'synopsis' => 'required',
-            'name' => 'required',
-            'sellP' => 'required|min:0',
-            'reservationP' => 'required|min:0',
-            'stock' => 'required|min:0'
-        ]);
-        $img = $request->file('file')->store('public/img');
-        $urlImg = Storage::url($img);
+        if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            $request->validate([
+                'file' => 'required|image',
+                'synopsis' => 'required',
+                'name' => 'required',
+                'sellP' => 'required|min:0',
+                'reservationP' => 'required|min:0',
+                'stock' => 'required|min:0'
+            ]);
+            $img = $request->file('file')->store('public/img');
+            $urlImg = Storage::url($img);
 
-        $data = ([
-            "name" => $request->input('name'),
-            "synopsis" => $request->input('synopsis'),
-            "img" => $urlImg,
-            "likes" => 0,
-            "stock" => $request->input('stock'),
-            "sellP" => $request->input('sellP'),
-            "reservationP" => $request->input('reservationP')
-        ]);
+            $data = ([
+                "name" => $request->input('name'),
+                "synopsis" => $request->input('synopsis'),
+                "img" => $urlImg,
+                "likes" => 0,
+                "stock" => $request->input('stock'),
+                "sellP" => $request->input('sellP'),
+                "reservationP" => $request->input('reservationP')
+            ]);
 
-        Pelicula::create($data);
-        // echo "<pre>";
-        // var_dump($data);
-        // echo "</pre>";
-        session([
-            'estado' => 'Película guardada con éxito',
-            'alert' => 'success'
-        ]);
+            Pelicula::create($data);
+            // echo "<pre>";
+            // var_dump($data);
+            // echo "</pre>";
+            session([
+                'estado' => 'Película guardada con éxito',
+                'alert' => 'success'
+            ]);
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
+        }
         return redirect()->route('Pelicula.index');
     }
 
@@ -134,6 +149,11 @@ class PeliculaController extends Controller
                 ->with("compra", $compra)
                 ->with("alquiler", $alquiler)
                 ->with("retraso", $retraso);
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
         }
 
         return view('pelicula.show')->with('pelicula', $movie[0]);
@@ -147,11 +167,19 @@ class PeliculaController extends Controller
      */
     public function edit($id)
     {
-        $pelicula = Pelicula::where('id', $id)->first();
-        // echo "<pre>";
-        // var_dump($movie[0]);
-        // echo "</pre>";
-        return view('pelicula.form', compact('pelicula'));
+        if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            $pelicula = Pelicula::where('id', $id)->first();
+            // echo "<pre>";
+            // var_dump($movie[0]);
+            // echo "</pre>";
+            return view('pelicula.form', compact('pelicula'));
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
+        }
+        return redirect()->back();
     }
 
     /**
@@ -163,41 +191,49 @@ class PeliculaController extends Controller
      */
     public function update(Request $request, $pelicula)
     {
-        $request->validate([
-            'synopsis' => 'required',
-            'name' => 'required',
-            'sellP' => 'required|min:0',
-            'reservationP' => 'required|min:0',
-            'stock' => 'required|min:0'
-        ]);
-        if (!empty($request->file('file'))) {
-            $img = $request->file('file')->store('public/img');
-            $urlImg = Storage::url($img);
-
-            $data = ([
-                "name" => $request->input('name'),
-                "synopsis" => $request->input('synopsis'),
-                "img" => $urlImg,
-                "stock" => $request->input('stock'),
-                "sellP" => $request->input('sellP'),
-                "reservationP" => $request->input('reservationP')
+        if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            $request->validate([
+                'synopsis' => 'required',
+                'name' => 'required',
+                'sellP' => 'required|min:0',
+                'reservationP' => 'required|min:0',
+                'stock' => 'required|min:0'
             ]);
+            if (!empty($request->file('file'))) {
+                $img = $request->file('file')->store('public/img');
+                $urlImg = Storage::url($img);
+
+                $data = ([
+                    "name" => $request->input('name'),
+                    "synopsis" => $request->input('synopsis'),
+                    "img" => $urlImg,
+                    "stock" => $request->input('stock'),
+                    "sellP" => $request->input('sellP'),
+                    "reservationP" => $request->input('reservationP')
+                ]);
+            } else {
+                $data = ([
+                    "name" => $request->input('name'),
+                    "synopsis" => $request->input('synopsis'),
+                    "stock" => $request->input('stock'),
+                    "sellP" => $request->input('sellP'),
+                    "reservationP" => $request->input('reservationP')
+                ]);
+            }
+            $toUpdate = Pelicula::where('id', $pelicula);
+            $toUpdate->update($data);
+            session([
+                'estado' => 'Película actualizada con éxito',
+                'alert' => 'success'
+            ]);
+            return redirect()->route('Pelicula.show', $pelicula);
         } else {
-            $data = ([
-                "name" => $request->input('name'),
-                "synopsis" => $request->input('synopsis'),
-                "stock" => $request->input('stock'),
-                "sellP" => $request->input('sellP'),
-                "reservationP" => $request->input('reservationP')
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
             ]);
         }
-        $toUpdate = Pelicula::where('id', $pelicula);
-        $toUpdate->update($data);
-        session([
-            'estado' => 'Película actualizada con éxito',
-            'alert' => 'success'
-        ]);
-        return redirect()->route('Pelicula.show', $pelicula);
+        return redirect()->back();
     }
 
     /**
@@ -208,13 +244,21 @@ class PeliculaController extends Controller
      */
     public function destroy($pelicula)
     {
-        DB::table('peliculas')
-            ->where('id', $pelicula)
-            ->delete();
-        session([
-            'estado' => 'Película eliminada con éxito',
-            'alert' => 'danger'
-        ]);
+        if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            DB::table('peliculas')
+                ->where('id', $pelicula)
+                ->delete();
+            session([
+                'estado' => 'Película eliminada con éxito',
+                'alert' => 'danger'
+            ]);
+        } else {
+            session([
+                'estado' => 'Acceso denegado',
+                'alert' => 'danger'
+            ]);
+        }
+
         return redirect()->back();
     }
 }
