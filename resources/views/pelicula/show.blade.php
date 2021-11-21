@@ -69,7 +69,11 @@
 
                 <br>
                 @include("pelicula.like-btn")
+                @if (session()->exists('idUser') && session()->get('typeUser') == 'admin')
+                    @include("pelicula.stock")
+                @endif
                 <br>
+
                 @include("pelicula.admin-btn")
                 <div class="row mt-4">
                     <div class="col-6 d-flex">

@@ -26,7 +26,7 @@ class FiltrosController extends Controller
     public function byPopulares()
     {
         $pelicula = \DB::table('peliculas')
-            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes')
+            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
             ->where('stock', '>', 0)
             ->orderBy('likes', 'desc')
             ->get();
@@ -37,7 +37,7 @@ class FiltrosController extends Controller
     public function byNombre()
     {
         $pelicula = \DB::table('peliculas')
-            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes')
+            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
             ->where('stock', '>', 0)
             ->orderBy('name', 'asc')
             ->get();
@@ -51,11 +51,11 @@ class FiltrosController extends Controller
             $pelicula = \DB::table('peliculas')
                 ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
                 ->where('stock', '>', 0)
+                ->orderBy('name', 'asc')
                 ->get();
 
             if (!empty($pelicula[0])) {
-                $aux = 0;
-                return view('pelicula.index')->with('peliculas', $pelicula)->with('aux', $aux);
+                return view('pelicula.index')->with('peliculas', $pelicula);
             } else {
                 session([
                     'estado' => 'No hay películas disponibles',
@@ -77,11 +77,11 @@ class FiltrosController extends Controller
             $pelicula = \DB::table('peliculas')
                 ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
                 ->where('stock', '<', 1)
+                ->orderBy('name', 'asc')
                 ->get();
 
             if (!empty($pelicula[0])) {
-                $aux = 0;
-                return view('pelicula.index')->with('peliculas', $pelicula)->with('aux', $aux);
+                return view('pelicula.index')->with('peliculas', $pelicula);
             } else {
                 session([
                     'estado' => 'No hay películas sin stock',

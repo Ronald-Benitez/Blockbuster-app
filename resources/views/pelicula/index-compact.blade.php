@@ -16,18 +16,7 @@
         <div class="card-body">
             <div class="container ">
                 <div class="row d-flex justify-content-center">
-                    @if (session()->exists('estado'))
-                        <div class="alert alert-{{ session()->get('alert') }}" role="alert">
-                            {{ session()->get('estado') }}
-                        </div>
-                    @endif
-
-                    <?php
-                    if (session()->exists('estado')) {
-                        session()->forget('estado');
-                        session()->forget('alert');
-                    }
-                    ?>
+                    @include("theme.alert")
 
                     <table class="table table-striped" id="buy" width="99%">
                         <thead>

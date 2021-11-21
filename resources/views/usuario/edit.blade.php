@@ -3,7 +3,7 @@
 
     <div class="container">
         <div class="row mt-5 justify-content-center align-items-center">
-            <div class="col-6 bg-light p-5">
+            <div class="col-lg-6 bg-light p-5">
                 <h2>Editar datos</h2>
                 <form action="{{ route('Usuario.update', $usuario->id) }}" method="post">
 

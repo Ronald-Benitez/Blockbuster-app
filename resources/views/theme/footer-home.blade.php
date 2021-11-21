@@ -18,6 +18,18 @@
                                 Ordenar por nombre
                             </a>
                         </li>
+                        @if (session()->exists('idUser') && session()->get('typeUser') == 'admin')
+                            <li>
+                                <a href="{{ route('Filtro.disponibles') }}" class="dropdown-item">
+                                    Ordenar por disponibles
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('Filtro.sinStock') }}" class="dropdown-item">
+                                    Ordenar por sin stock
+                                </a>
+                            </li>
+                        @endif
 
                     </ul>
                 </div>
