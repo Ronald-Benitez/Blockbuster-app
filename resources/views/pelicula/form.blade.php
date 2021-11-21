@@ -4,7 +4,7 @@
 
 
     @if (isset($pelicula))
-        <div class="container mt-3">
+        <div class="container mt-5 pt-3">
             <p class="fs-1 text-center ">Actualización de película</p>
         </div>
 
@@ -12,7 +12,7 @@
             $data = $pelicula;
         @endphp
     @else
-        <div class="container mt-3">
+        <div class="container mt-5 pt-3">
             <p class="fs-1 text-center ">Registro de película</p>
         </div>
     @endif

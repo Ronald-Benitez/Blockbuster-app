@@ -3,7 +3,7 @@
 
     <div class="d-flex justify-content-center my-5">
 
-        <div class="card text-center">
+        <div class="card text-center mt-5">
             <div class="card-header h4">
                 Entrega de película con retraso
             </div>

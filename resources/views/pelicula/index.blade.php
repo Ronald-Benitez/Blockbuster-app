@@ -59,22 +59,8 @@
 
 @section('content')
 
-    <div class="container py-5 mt-5">
-
-        @if (session()->exists('estado'))
-            <div class="alert alert-{{ session()->get('alert') }}" role="alert">
-                {{ session()->get('estado') }}
-            </div>
-        @endif
-
-        <?php
-        if (session()->exists('estado')) {
-            session()->forget('estado');
-            session()->forget('alert');
-        }
-        ?>
-    </div>
-    <div class="container mb-5">
+    <div class="container my-5 p-4">
+        @include("theme.alert")
         <div class="row d-flex justify-content-around">
             @foreach ($peliculas as $pelicula)
 
@@ -144,16 +130,4 @@
     @else
         @include('theme.footer-home')
     @endif
-@endsection
-
-@section('script')
-    <script>
-        $(function() {
-            setTimeout(() => {
-                $(".alert").remove();
-            }, 4000);
-
-        });
-    </script>
-
 @endsection

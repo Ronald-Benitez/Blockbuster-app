@@ -105,8 +105,9 @@ class FiltrosController extends Controller
 
         $pelicula = \DB::table('peliculas')
             ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
-            ->where('name', 'like', $request->input('search'))
+            ->where('name', 'LIKE', '%' . $request->input('search') . '%')
             ->get();
+
         $aux = 0;
         if (!empty($pelicula[0])) {
             return view('pelicula.index')->with('peliculas', $pelicula)->with('aux', $aux);
@@ -115,7 +116,7 @@ class FiltrosController extends Controller
                 'estado' => 'Pelicula no encontrada',
                 'alert' => 'warning'
             ]);
-            return redirect()->back();
+            return redirect()->route('Pelicula.index');
         }
     }
 }
