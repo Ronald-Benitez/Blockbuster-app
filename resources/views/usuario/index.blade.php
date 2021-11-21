@@ -9,7 +9,7 @@
 
     <div class="card my-5" style="width:99%">
         <div class="card-title text-center my-4">
-            <h3>Registro de peliculas</h3>
+            <h3>Registro de usuarios</h3>
         </div>
         @include("theme.alert")
         <div class="card-body">
