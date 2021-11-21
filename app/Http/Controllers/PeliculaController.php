@@ -28,7 +28,7 @@ class PeliculaController extends Controller
     public function index()
     {
         $pelicula = \DB::table('peliculas')
-            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes')
+            ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
             ->where('stock', '>', 0)
             ->orderBy('name', 'asc')
             ->get();
@@ -73,9 +73,9 @@ class PeliculaController extends Controller
                 'file' => 'required|image',
                 'synopsis' => 'required',
                 'name' => 'required',
-                'sellP' => 'required|min:0',
-                'reservationP' => 'required|min:0',
-                'stock' => 'required|min:0'
+                'sellP' => 'required|numeric|min:0',
+                'reservationP' => 'required|numeric|min:0',
+                'stock' => 'required|numeric|min:0'
             ]);
             $img = $request->file('file')->store('public/img');
             $urlImg = Storage::url($img);
@@ -119,7 +119,7 @@ class PeliculaController extends Controller
             ->where('id', '=', $pelicula)
             ->get();
 
-        if (!empty($pelicula[0])) {
+        if (!empty($movie[0])) {
 
             if (session()->exists('idUser')) {
                 $fecha = Carbon::now();
@@ -164,7 +164,7 @@ class PeliculaController extends Controller
                 'estado' => 'La pelicula no existe o ha sido eliminada',
                 'alert' => 'warning'
             ]);
-            return redirect()->back();
+            return redirect()->route('Pelicula.index');
         }
 
         return view('pelicula.show')->with('pelicula', $movie[0]);
@@ -270,6 +270,6 @@ class PeliculaController extends Controller
             ]);
         }
 
-        return redirect()->back();
+        return redirect()->route('Pelicula.index');
     }
 }
