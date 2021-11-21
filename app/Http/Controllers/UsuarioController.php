@@ -19,6 +19,17 @@ class UsuarioController extends Controller
      */
     public function index()
     {
+        if(session()->exists('typeUser')){
+            if(session()->get('typeUser')!="admin"){
+                session()->put('alert', "danger");
+                session()->put('estado', "¡¡ Acceso Denegado!!");
+                return redirect()->back();
+            }
+        }else{
+            session()->put('alert', "danger");
+            session()->put('estado', "¡¡ Session no iniciada !!");
+            return redirect()->back();
+        }
         $usuarios = Usuario::all();
         return view('usuario.index',compact('usuarios'));
     }
@@ -80,6 +91,18 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
+        //Verificacion de Sessiones
+        if(session()->exists('typeUser')){
+            if($id != session()->get('idUser')){
+                session()->put('alert', "danger");
+                session()->put('estado', "¡¡ No se puede acceder a la privacidad del ususario !!");
+                return redirect()->back();
+            }
+        }else{
+            session()->put('alert', "danger");
+            session()->put('estado', "¡¡ Session no iniciada !!");
+            return redirect()->back();
+        }
         
         $usuario = Usuario::where('id','=',$id)->first();
         if(empty($usuario)){//USUSARIO NO ENCONTRADO
@@ -118,6 +141,18 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
+
+        if(session()->exists('typeUser')){
+            if(session()->get('typeUser')!="admin" || (session()->get('idUser')!=$id)){
+                session()->put('alert', "danger");
+                session()->put('estado', "¡¡ Acceso Denegado!!");
+                return redirect()->route('Pelicula.index');
+            }
+        }else{
+            session()->put('alert', "danger");
+            session()->put('estado', "¡¡ Session no iniciada !!");
+            return redirect()->route('Pelicula.index');
+        }
         $usuario = $this->existeUsuario($id);
         return view('usuario.edit', compact('usuario'));
     }
@@ -146,8 +181,8 @@ class UsuarioController extends Controller
         ]);
         $usuario->update($data);
         session()->put('alert', "success");
-        session()->put('estado', "¡ Usuario Editado con exito !");
-        return view('usuario.perfil', compact('usuario'));
+        session()->put('estado', "¡ Usuario ".$usuario->username." Editado con exito !");
+        return redirect()->route('Usuario.index');
     }
 
     /**
@@ -165,7 +200,7 @@ class UsuarioController extends Controller
         return redirect()->route('Usuario.index');
     }
 
-    public function existeUsuario($id){
+    private function existeUsuario($id){
         $usuario = Usuario::where('id','=',$id)->first();
         if(empty($usuario)){//USUSARIO NO ENCONTRADO
             session()->put('alert', "danger");
