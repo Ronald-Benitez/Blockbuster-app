@@ -12,6 +12,7 @@
         <div class="card-title text-center my-4">
             <h3>Registro de peliculas</h3>
         </div>
+        @include("theme.alert")
         <div class="card-body">
             <div class="container ">
                 <div class="row d-flex justify-content-center">

@@ -31,13 +31,9 @@
         }
 
     </style>
-    <div class="container text-center my-4">
-        <h1 class="text-center mt-4">{{ $pelicula->name }}</h1>
-        @if (session()->exists('estado'))
-            <div class="alert alert-{{ session()->get('alert') }}" role="alert">
-                {{ session()->get('estado') }}
-            </div>
-        @endif
+    <div class="container text-center mt-5">
+        <h1 class="text-center mt-5 pt-4">{{ $pelicula->name }}</h1>
+        @include('theme.alert')
         @if (isset($alquiler) && !empty($alquiler) && $alquiler->state == 1)
             @if ($retraso > 0)
                 <small class="text-danger m-2">Pelicula rentada</small><br>
@@ -57,8 +53,7 @@
         }
         ?>
     </div>
-    <div class="d-flex justify-content-center ">
-
+    <div class="d-flex justify-content-center my-5">
 
         <div class="card mb-5" style="width: 45rem;">
             <img loading="lazy" src="{{ asset($pelicula->img) }}" class="img-fluid img">
@@ -99,16 +94,4 @@
 
 @section('footer')
     @include('theme.footer-index')
-@endsection
-
-@section('script')
-    <script>
-        $(function() {
-            setTimeout(() => {
-                $(".alert").remove();
-            }, 4000);
-
-        });
-    </script>
-
 @endsection
