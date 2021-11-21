@@ -19,8 +19,9 @@
           </form>
     </div>
     {{-- Valores Derecha --}}
-    <div class="mx-5">
+    <div class="mx-2">
       <a type="button" class="btn btn-outline-info" href="{{route('login.loguear')}}">Iniciar sesión</a>
+      <a type="button" class="btn btn-outline-warning ms-1" href="{{route('Usuario.create')}}">Registrarse</a>
     </div>
     
     </div>

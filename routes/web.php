@@ -34,7 +34,7 @@ Route::get('login', [LoginController::class, 'index']);
 Route::post('login', [LoginController::class, 'loguear'])->name('login.loguear');
 Route::get('logout', [LoginController::class, 'logout'])->name('login.logout');
 
-Route::get('Filtro', [FiltrosController::class, 'index']);
+Route::get('Filtro', [FiltrosController::class, 'index'])->name('Filtro.index');
 Route::get('Disponibles', [FiltrosController::class, 'disponibles'])->name('Filtro.disponibles');
 Route::get('SinStock', [FiltrosController::class, 'sinStock'])->name('Filtro.sinStock');
 Route::post('Buscar', [FiltrosController::class, 'likeThis'])->name('Filtro.search');

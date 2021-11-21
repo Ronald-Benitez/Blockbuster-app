@@ -8,6 +8,15 @@
             <form action="{{route('Usuario.update',$usuario->id)}}" method="post">
                 
                 @csrf
+                @if (session()->exists('estado'))
+                        <div class="alert alert-{{ session()->get('alert') }}" role="alert">
+                        {{ session()->get('estado') }}
+                      </div>
+                      @php
+                        session()->forget('estado');
+                        session()->forget('alert');
+                      @endphp
+                    @endif
                 
                 @method('put')
                 <div class="mb-3">
