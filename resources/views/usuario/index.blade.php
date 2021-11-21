@@ -7,7 +7,9 @@
 
 @section('content')
 
-    <div class="h2 d-flex justify-content-md-center">LISTA DE USUARIOS</div>
+    <div class="h2 d-flex justify-content-md-center mt-5">
+        <h3 class="mt-4">Lista de usuarios</h3>
+    </div>
     @if (session()->exists('estado'))
         <div class="alert alert-{{ session()->get('alert') }}" role="alert">
             {{ session()->get('estado') }}
@@ -17,7 +19,7 @@
             session()->forget('alert');
         @endphp
     @endif
-    <div class="container col-10">
+    <div class="container col-10 mb-5">
         <div class="card-body">
             <table class="table table-striped table-hover" id="Usuarios">
                 <thead>
