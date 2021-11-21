@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('Pelicula.index') }}">
-            <img src="https://img.icons8.com/doodle/48/000000/minecraft-grass-cube.png" alt="" width="30" height="24">
+            <img src="https://lh3.googleusercontent.com/JGMtspdFiOVpDmBaGC15E4L_WZWmzJHjQrB_qAV3aqwRM3WN-pdHKcwNdHf8inBLcxhElJClPMvIj-ljVcKV1GzJokNqEZlpWGs"
+                alt="" width="30" height="30">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
