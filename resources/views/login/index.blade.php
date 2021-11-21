@@ -38,8 +38,24 @@
                             </div>
                         @enderror
                     </div>
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-primary mt-3">Ingresar</button>
+                    <div class="mb-3 fixed-bottom ">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col">
+                                <div class="row d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-primary d-block my-2 w-50">Ingresar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center">
+                            <div class="col">
+                                <div class="row d-flex justify-content-center">
+                                    <a href="{{ route('Pelicula.index') }}"
+                                        class="btn btn-outline-success d-block my-2 w-50">Inicio</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
 
@@ -54,8 +70,4 @@
             window.history.replaceState(null, null, window.location.href);
         }
     </script>
-@endsection
-
-@section('footer')
-    @include('theme.footer-index')
 @endsection
