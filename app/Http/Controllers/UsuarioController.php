@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\UseUse;
 use Symfony\Contracts\Service\Attribute\Required;
+use Illuminate\Support\Carbon;
 
 class UsuarioController extends Controller
 {
@@ -20,7 +21,7 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = Usuario::all();
-        return view('usuario.index',compact('usuarios'));
+        return view('usuario.index', compact('usuarios'));
     }
 
     /**
@@ -41,32 +42,32 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $flag=false;
+        $flag = false;
         $request->validate([
-            'username'=>'required|alpha_dash',
-            'password'=>'required'
+            'username' => 'required|alpha_dash',
+            'password' => 'required'
         ]);
         $usuario = new Usuario();
         $usuario->username = $request->username;
-        $usuario->password = password_hash($request->password,PASSWORD_DEFAULT);
+        $usuario->password = password_hash($request->password, PASSWORD_DEFAULT);
         $usuario->type = "user";
-        if(!empty($request->type)){
-            $flag=true;
+        if (!empty($request->type)) {
+            $flag = true;
             $usuario->type = $request->type;
         }
 
         //Si ya existe el usuario
-        $user = Usuario::where('username','=',$request->username)->first();
-        if(!empty($user)){
+        $user = Usuario::where('username', '=', $request->username)->first();
+        if (!empty($user)) {
             session()->put('alert', "danger");
-            session()->put('estado', "El usuario ".$request->username." ya existe!");
+            session()->put('estado', "El usuario " . $request->username . " ya existe!");
             return redirect()->route('Usuario.create');
         }
         $usuario->save();
         //mensaje de Exito
         session()->put('alert', "success");
         session()->put('estado', "¡ Usuario Agregado con exito !");
-        if($flag){
+        if ($flag) {
             return redirect()->route('Usuario.index');
         }
         return redirect()->route('Pelicula.index');
@@ -80,34 +81,34 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        
-        $usuario = Usuario::where('id','=',$id)->first();
-        if(empty($usuario)){//USUSARIO NO ENCONTRADO
+
+        $usuario = Usuario::where('id', '=', $id)->first();
+        if (empty($usuario)) { //USUSARIO NO ENCONTRADO
 
             return redirect()->route('Usuario.index');
         }
         //LLamado de las siguientes tablas
         //likes
         $likes = DB::table('likes')
-                    ->join('peliculas', 'peliculas.id', '=', 'likes.idMovie')
-                    ->select('peliculas.id', 'peliculas.name',)
-                    ->where('likes.idUser',$id)
-                    ->get();
+            ->join('peliculas', 'peliculas.id', '=', 'likes.idMovie')
+            ->select('peliculas.id', 'peliculas.name',)
+            ->where('likes.idUser', $id)
+            ->get();
         //Compras de peliculas
         $compras = DB::table('compras')
-                    ->select('idMovie', 'created_at','name','buyP','id')
-                    ->where('compras.idUser','=',$id)
-                    ->orderBy('id','asc')
-                    ->get();
+            ->select('idMovie', 'created_at', 'name', 'buyP', 'id')
+            ->where('compras.idUser', '=', $id)
+            ->orderBy('id', 'asc')
+            ->get();
 
         //Reservaciones de peliculas
         $reservacion = DB::table('reservacions')
-                    ->join('peliculas', 'peliculas.id','=', 'reservacions.idMovie')
-                    ->select('reservacions.idMovie', 'peliculas.name','reservacions.buyP','reservacions.state','reservacions.finish','reservacions.id')
-                    ->where('reservacions.idUser','=',$id)
-                    ->get();
-       
-        return view('usuario.perfil', compact('usuario','likes','compras','reservacion'));
+            ->join('peliculas', 'peliculas.id', '=', 'reservacions.idMovie')
+            ->select('reservacions.idMovie', 'peliculas.name', 'reservacions.buyP', 'reservacions.state', 'reservacions.finish', 'reservacions.id')
+            ->where('reservacions.idUser', '=', $id)
+            ->get();
+        $now = Carbon::now();
+        return view('usuario.perfil', compact('usuario', 'likes', 'compras', 'reservacion', 'now'));
     }
 
     /**
@@ -132,17 +133,17 @@ class UsuarioController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'username'=>'required|alpha_dash',
-            'type'=>'required',
-            'password'=> 'required_with:cambiar',
+            'username' => 'required|alpha_dash',
+            'type' => 'required',
+            'password' => 'required_with:cambiar',
         ]);
-        
+
         $usuario = $this->existeUsuario($id);
 
-        $data=([
-            'username'=> $request->username,
-            'password'=> password_hash($request->password,PASSWORD_DEFAULT),
-            'type'=>$request->type
+        $data = ([
+            'username' => $request->username,
+            'password' => password_hash($request->password, PASSWORD_DEFAULT),
+            'type' => $request->type
         ]);
         $usuario->update($data);
         session()->put('alert', "success");
@@ -160,16 +161,17 @@ class UsuarioController extends Controller
     {
         $usuario = $this->existeUsuario($id);
         $usuario->delete();
-            session()->put('alert', "danger");
-            session()->put('estado', "¡ Usuario Eliminado con exito !");
+        session()->put('alert', "danger");
+        session()->put('estado', "¡ Usuario Eliminado con exito !");
         return redirect()->route('Usuario.index');
     }
 
-    public function existeUsuario($id){
-        $usuario = Usuario::where('id','=',$id)->first();
-        if(empty($usuario)){//USUSARIO NO ENCONTRADO
+    public function existeUsuario($id)
+    {
+        $usuario = Usuario::where('id', '=', $id)->first();
+        if (empty($usuario)) { //USUSARIO NO ENCONTRADO
             session()->put('alert', "danger");
-            session()->put('estado', "El usuario #".$id." no existe!");
+            session()->put('estado', "El usuario #" . $id . " no existe!");
             return redirect()->route('Usuario.index');
         }
         return $usuario;
