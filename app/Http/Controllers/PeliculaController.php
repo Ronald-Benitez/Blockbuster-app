@@ -211,6 +211,14 @@ class PeliculaController extends Controller
                 'stock' => 'required|min:0'
             ]);
             if (!empty($request->file('file'))) {
+                //Borrar imagén
+                $movie =  DB::table('peliculas')
+                    ->where('id', $pelicula)
+                    ->first();
+                $url = str_replace("storage", "public", $movie->img);
+                Storage::delete($url);
+
+                //Guardar nueva imagén
                 $img = $request->file('file')->store('public/img');
                 $urlImg = Storage::url($img);
 
@@ -256,9 +264,16 @@ class PeliculaController extends Controller
     public function destroy($pelicula)
     {
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
+            $movie =  DB::table('peliculas')
+                ->where('id', $pelicula)
+                ->first();
+            $url = str_replace("storage", "public", $movie->img);
+            Storage::delete($url);
+
             DB::table('peliculas')
                 ->where('id', $pelicula)
                 ->delete();
+
             session([
                 'estado' => 'Película eliminada con éxito',
                 'alert' => 'danger'
