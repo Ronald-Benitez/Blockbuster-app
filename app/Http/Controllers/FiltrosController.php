@@ -54,7 +54,8 @@ class FiltrosController extends Controller
                 ->get();
 
             if (!empty($pelicula[0])) {
-                return view('pelicula.index')->with('peliculas', $pelicula);
+                $aux = 0;
+                return view('pelicula.index')->with('peliculas', $pelicula)->with('aux', $aux);
             } else {
                 session([
                     'estado' => 'No hay películas disponibles',
@@ -79,7 +80,8 @@ class FiltrosController extends Controller
                 ->get();
 
             if (!empty($pelicula[0])) {
-                return view('pelicula.index')->with('peliculas', $pelicula);
+                $aux = 0;
+                return view('pelicula.index')->with('peliculas', $pelicula)->with('aux', $aux);
             } else {
                 session([
                     'estado' => 'No hay películas sin stock',
