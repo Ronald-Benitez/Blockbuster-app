@@ -1,37 +1,38 @@
 @extends('theme.base')
+@section('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+@endsection
 
 @section('content')
 
-<div class="h2">LISTA DE USUARIOS</div>
-@php
-session_start()
-@endphp
-@if (isset($_SESSION['estado']))
-<div class="alert alert-{{ $_SESSION['alert'] }}" role="alert">
-    {{ $_SESSION['estado'] }}
-</div>
-@php
-unset($_SESSION["estado"]);
-unset($_SESSION["alert"]);
-@endphp
+<div class="h2 d-flex justify-content-md-center">LISTA DE USUARIOS</div>
+@if (session()->exists('estado'))
+    <div class="alert alert-{{ session()->get('alert') }}" role="alert">
+    {{ session()->get('estado') }}
+    </div>
+    @php
+    session()->forget('estado');
+    session()->forget('alert');
+    @endphp
 @endif
-
-<div class="container">
-    <div class="row">
-        <table class="table table-striped">
+<div class="container col-10">
+    <div class="card-body">
+        <table class="table table-striped table-hover" id="Usuarios">
             <thead>
                 <tr>
-                    <th scope="col" class="align-middle">id</th>
-                    <th scope="col" class="align-middle">Nombre de ususario</th>
-                    <th scope="col" class="align-middle">Tipo de usuario</th>
-                    <th scope="col" class="align-middle">acciones</th>
+                    <th scope="col" class="align-middle">Id</th>
+                    <th scope="col" class="align-middle">Nombre de Ususario</th>
+                    <th scope="col" class="align-middle">Tipo de Usuario</th>
+                    <th scope="col" class="align-middle">Acciones</th>
                 </tr>
             </thead>
             @foreach ($usuarios as $user)
             <tr>
-                <td class="h5">{{$user->id}}</td>
-                <td class="h5">{{$user->username}}</td>
-                <td class="h5">{{$user->type}}</td>
+                <td>{{$user->id}}</td>
+                <td>{{$user->username}}</td>
+                <td>{{$user->type}}</td>
                 <td class="d-flex">
                     {{-- EDITAR --}}
                     <a type="button" class="btn btn-warning btn-sm" href="{{route('Usuario.edit', $user->id )}}">
@@ -63,15 +64,16 @@ unset($_SESSION["alert"]);
             </tr>
             @endforeach
         </table>
-        <div class="col-3">
-            {!! $usuarios->links() !!}
-        </div>
-
     </div>
 </div>
 @endsection
 
 @section('script')
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+{{-- Tiempo de vida de la alerta --}}
 <script>
     $(function () {
         setTimeout(() => {
@@ -79,6 +81,39 @@ unset($_SESSION["alert"]);
         }, 4000);
     });
 
+</script>
+{{-- Tabla --}}
+<script>
+    $(document).ready(function() {
+        $('#Usuarios').DataTable({
+            columnDefs: [
+                { orderable: false, targets: 3 }
+             ],
+            responsive: true,
+            autoWidth: false,
+            "language": {
+                "lengthMenu": "Mostrar " +
+                    `<select>
+                    <option value = "5">5</option>
+                    <option value = "10">10</option>
+                    <option value = "15">25</option>
+                    <option value = "50">50</option>
+                    <option value = "-1">All</option>
+                    </select>` +
+                    " registros por página",
+                "zeroRecords": "Sin resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros",
+                "infoFiltered": "(Filtrando de _MAX_ registros totales)",
+                'search' : 'Buscar',
+                "paginate": {
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }         
+            
+        });
+    });
 </script>
 
 @endsection

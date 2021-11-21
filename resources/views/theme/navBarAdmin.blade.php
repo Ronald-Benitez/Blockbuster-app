@@ -21,6 +21,9 @@
                 </button>
               <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end dropdown-menu-lg-start">
                 <li><a class="dropdown-item" href="{{route('Usuario.index')}}">Usuarios</a></li>
+                <li><a class="dropdown-item" href="{{route('Usuario.create')}}">Agregar Usuarios</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{route('Filtro.index')}}">Peliculas</a></li>
                 <li><a class="dropdown-item" href="{{route('Compra.index')}}">Compra de peliculas</a></li>
                 <li><a class="dropdown-item" href="{{route('Reservacion.index')}}">Renta de peliculas</a></li>
               </ul>
