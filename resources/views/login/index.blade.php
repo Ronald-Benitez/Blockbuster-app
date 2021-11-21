@@ -28,7 +28,7 @@
                         @enderror
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-5 pb-3">
                         <label for="contra" class="form-label">Password</label>
                         <input type="password" class="form-control" name="password" id="password"
                             placeholder="**********">
@@ -38,7 +38,7 @@
                             </div>
                         @enderror
                     </div>
-                    <div class="mb-3 fixed-bottom ">
+                    <div class="mb-3 fixed-bottom bg-light">
                         <div class="row d-flex justify-content-center">
                             <div class="col">
                                 <div class="row d-flex justify-content-center">
