@@ -9,13 +9,15 @@
 
     <div class="card my-5" style="width:99%">
         <div class="card-title text-center my-4">
-            <h3>Usuarios</h3>
+            <h3>Registro de peliculas</h3>
         </div>
         @include("theme.alert")
         <div class="card-body">
             <div class="container ">
                 <div class="row d-flex justify-content-center">
-                    <table class="table table-striped table-hover" id="Usuarios">
+                    @include("theme.alert")
+
+                    <table class="table table-striped" id="Usuarios" width="99%">
                         <thead>
                             <tr>
                                 <th scope="col" class="align-middle">Id</th>
@@ -29,7 +31,7 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->type }}</td>
-                                <td class="d-flex">
+                                <td>
                                     {{-- EDITAR --}}
                                     <a type="button" class="btn btn-warning btn-sm"
                                         href="{{ route('Usuario.edit', $user->id) }}">
@@ -43,7 +45,8 @@
                                         Editar
                                     </a>
                                     {{-- ELIMINAR --}}
-                                    <form action="{{ route('Usuario.destroy', $user->id) }}" method="post">
+                                    <form action="{{ route('Usuario.destroy', $user->id) }}" method="post"
+                                        class="d-inline">
                                         @csrf
                                         @method("delete")
                                         <button type="submit" class="btn btn-danger btn-sm">
@@ -89,10 +92,7 @@
     <script>
         $(document).ready(function() {
             $('#Usuarios').DataTable({
-                columnDefs: [{
-                    orderable: false,
-                    targets: 3
-                }],
+
                 responsive: true,
                 autoWidth: false,
                 "language": {

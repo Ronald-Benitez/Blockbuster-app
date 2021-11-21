@@ -235,58 +235,58 @@
 
             </div>
         </div>
+    </div>
 
 
+    {{--  --}}
 
-        {{--  --}}
+@endsection
 
-    @endsection
+@section('footer')
+    @include('theme.footer-index')
+@endsection
 
-    @section('footer')
-        @include('theme.footer-index')
-    @endsection
-
-    @section('script')
-        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
-        {{-- Tiempo de vida de la alerta --}}
-        <script>
-            $(function() {
-                setTimeout(() => {
-                    $(".alert").remove();
-                }, 4000);
-            });
-        </script>
-        {{-- Tabla --}}
-        <script>
-            $(document).ready(function() {
-                $('#Like,#Renta,#Venta').DataTable({
-                    responsive: true,
-                    autoWidth: false,
-                    "language": {
-                        "lengthMenu": "Mostrar " +
-                            `<select>
+@section('script')
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+    {{-- Tiempo de vida de la alerta --}}
+    <script>
+        $(function() {
+            setTimeout(() => {
+                $(".alert").remove();
+            }, 4000);
+        });
+    </script>
+    {{-- Tabla --}}
+    <script>
+        $(document).ready(function() {
+            $('#Like,#Renta,#Venta').DataTable({
+                responsive: true,
+                autoWidth: false,
+                "language": {
+                    "lengthMenu": "Mostrar " +
+                        `<select>
                     <option value = "5">5</option>
                     <option value = "10">10</option>
                     <option value = "15">25</option>
                     <option value = "50">50</option>
                     <option value = "-1">All</option>
                     </select>` +
-                            " registros por página",
-                        "zeroRecords": "Sin resultados",
-                        "info": "Mostrando página _PAGE_ de _PAGES_",
-                        "infoEmpty": "Sin registros",
-                        "infoFiltered": "(Filtrando de _MAX_ registros totales)",
-                        'search': 'Buscar',
-                        "paginate": {
-                            "next": "Siguiente",
-                            "previous": "Anterior"
-                        }
+                        " registros por página",
+                    "zeroRecords": "Sin resultados",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "Sin registros",
+                    "infoFiltered": "(Filtrando de _MAX_ registros totales)",
+                    'search': 'Buscar',
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior"
                     }
+                }
 
-                });
             });
-        </script>
-    @endsection
+        });
+    </script>
+@endsection
