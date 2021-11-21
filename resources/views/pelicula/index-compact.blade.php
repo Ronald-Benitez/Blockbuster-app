@@ -103,26 +103,26 @@
                 responsive: true,
                 autoWidth: false,
                 "language": {
-                    "lengthMenu": "Mostrar" +
+                    "lengthMenu": "Mostrar " +
                         `<select>
-                        <option value = "5">5</option>
-                        <option value = "10">10</option>
-                        <option value = "15">25</option>
-                        <option value = "50">50</option>
-                        <option value = "-1">All</option>
-
-                        </select>` +
-                        "registros por página",
+                    <option value = "5">5</option>
+                    <option value = "10">10</option>
+                    <option value = "15">25</option>
+                    <option value = "50">50</option>
+                    <option value = "-1">All</option>
+                    </select>` +
+                        " registros por página",
                     "zeroRecords": "Sin resultados",
                     "info": "Mostrando página _PAGE_ de _PAGES_",
                     "infoEmpty": "Sin registros",
                     "infoFiltered": "(Filtrando de _MAX_ registros totales)",
-                    "search": "Buscar",
+                    'search': 'Buscar',
                     "paginate": {
                         "next": "Siguiente",
                         "previous": "Anterior"
                     }
                 }
+
             });
         });
     </script>

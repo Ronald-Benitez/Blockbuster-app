@@ -32,6 +32,12 @@ class PeliculaController extends Controller
             ->where('stock', '>', 0)
             ->orderBy('name', 'asc')
             ->get();
+        if (empty($pelicula[0])) {
+            session([
+                'estado' => 'No hay películas disponibles',
+                'alert' => 'warning'
+            ]);
+        }
 
         return view('pelicula.index')->with('peliculas', $pelicula);
     }
@@ -113,43 +119,52 @@ class PeliculaController extends Controller
             ->where('id', '=', $pelicula)
             ->get();
 
-        if (session()->exists('idUser')) {
-            $fecha = Carbon::now();
+        if (!empty($pelicula[0])) {
 
-            $likes = \DB::table('likes')
-                ->select('id')
-                ->where('idUser', '=', session()->get('idUser'))
-                ->where('idMovie', '=', $pelicula)
-                ->first();
+            if (session()->exists('idUser')) {
+                $fecha = Carbon::now();
 
-            $compra = \DB::table('compras')
-                ->select('id')
-                ->where('idUser', '=', session()->get('idUser'))
-                ->where('idMovie', '=', $pelicula)
-                ->first();
+                $likes = \DB::table('likes')
+                    ->select('id')
+                    ->where('idUser', '=', session()->get('idUser'))
+                    ->where('idMovie', '=', $pelicula)
+                    ->first();
 
-            $alquiler = \DB::table('reservacions')
-                ->select('id', 'finish', "state")
-                ->where('idUser', '=', session()->get('idUser'))
-                ->where('idMovie', '=', $pelicula)
-                ->orderBy('id', "desc")
-                ->first();
-            // echo "<pre>";
-            // var_dump($likes[0]);
-            // echo "</pre>";
-            $retraso = 0;
-            if (isset($alquiler->finish)) {
-                $fecha2 = Carbon::createFromDate($alquiler->finish);
-                if ($fecha2->lessThan($fecha)) {
-                    $retraso = $fecha2->diffInDays($fecha);
+                $compra = \DB::table('compras')
+                    ->select('id')
+                    ->where('idUser', '=', session()->get('idUser'))
+                    ->where('idMovie', '=', $pelicula)
+                    ->first();
+
+                $alquiler = \DB::table('reservacions')
+                    ->select('id', 'finish', "state")
+                    ->where('idUser', '=', session()->get('idUser'))
+                    ->where('idMovie', '=', $pelicula)
+                    ->orderBy('id', "desc")
+                    ->first();
+                // echo "<pre>";
+                // var_dump($likes[0]);
+                // echo "</pre>";
+                $retraso = 0;
+                if (isset($alquiler->finish)) {
+                    $fecha2 = Carbon::createFromDate($alquiler->finish);
+                    if ($fecha2->lessThan($fecha)) {
+                        $retraso = $fecha2->diffInDays($fecha);
+                    }
                 }
+                return view('pelicula.show')
+                    ->with('pelicula', $movie[0])
+                    ->with("like", $likes)
+                    ->with("compra", $compra)
+                    ->with("alquiler", $alquiler)
+                    ->with("retraso", $retraso);
             }
-            return view('pelicula.show')
-                ->with('pelicula', $movie[0])
-                ->with("like", $likes)
-                ->with("compra", $compra)
-                ->with("alquiler", $alquiler)
-                ->with("retraso", $retraso);
+        } else {
+            session([
+                'estado' => 'La pelicula no existe o ha sido eliminada',
+                'alert' => 'warning'
+            ]);
+            return redirect()->back();
         }
 
         return view('pelicula.show')->with('pelicula', $movie[0]);
