@@ -8,15 +8,7 @@
                 <form action="{{ route('Usuario.update', $usuario->id) }}" method="post">
 
                     @csrf
-                    @if (session()->exists('estado'))
-                        <div class="alert alert-{{ session()->get('alert') }}" role="alert">
-                            {{ session()->get('estado') }}
-                        </div>
-                        @php
-                            session()->forget('estado');
-                            session()->forget('alert');
-                        @endphp
-                    @endif
+                   @include('theme.alert')
 
                     @method('put')
                     <div class="mb-3">
@@ -44,6 +36,7 @@
                             </div>
                         @enderror
                     </div>
+                    @if (session()->get('typeUser')=='admin')
                     <div class="mb-3">
                         <select class="form-select" name="type" id="type">
                             <option selected value="">Tipo de ususario</option>
@@ -55,7 +48,9 @@
                                 <small class="text-danger font-weight-bold">*{{ $message }}</small>
                             </div>
                         @enderror
-                        <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+                    @endif
+                    
+                    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
                 </form>
             </div>
 
@@ -65,5 +60,5 @@
 @endsection
 
 @section('footer')
-    @include('theme.footer-previous')
+    @include('theme.footer-index')
 @endsection

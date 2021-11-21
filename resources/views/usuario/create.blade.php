@@ -6,15 +6,8 @@
             <div class="col-lg-8 bg-light p-3">
                 <h2>Registro</h2>
                 <form action="{{ route('Usuario.store') }}" method="post">
-                    @if (session()->exists('estado'))
-                        <div class="alert alert-{{ session()->get('alert') }}" role="alert">
-                            {{ session()->get('estado') }}
-                        </div>
-                        @php
-                            session()->forget('estado');
-                            session()->forget('alert');
-                        @endphp
-                    @endif
+                   
+                    @include('theme.alert')
                     @csrf
                     <div class="mb-3">
                         <label for="nombreUsusario" class="form-label">Nombre de ususario</label>
