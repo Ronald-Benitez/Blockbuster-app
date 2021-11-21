@@ -38,19 +38,19 @@
                             </div>
                         @enderror
                     </div>
-                    <div class="mb-3 fixed-bottom bg-light">
-                        <div class="row d-flex justify-content-center">
+                    <div class="pb-3 fixed-bottom bg-light">
+                        <div class="row d-flex justify-content-center p-1">
                             <div class="col">
                                 <div class="row d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-primary d-block my-2 w-50">Ingresar</button>
+                                    <button type="submit" class="btn btn-primary d-block  w-50">Ingresar</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="row d-flex justify-content-center">
+                        <div class="row d-flex justify-content-center p-1">
                             <div class="col">
                                 <div class="row d-flex justify-content-center">
                                     <a href="{{ route('Pelicula.index') }}"
-                                        class="btn btn-outline-success d-block my-2 w-50">Inicio</a>
+                                        class="btn btn-outline-success d-block w-50">Inicio</a>
                                 </div>
                             </div>
                         </div>
