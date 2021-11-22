@@ -14,7 +14,7 @@ class CompraController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index()//comprobacion del acceso del usuario
     {
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
             $compras = \DB::table('compras')
@@ -49,7 +49,7 @@ class CompraController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request)//Disponibilidad y compra de peliculas 
     {
 
         if (session()->exists("idUser")) {
@@ -99,7 +99,7 @@ class CompraController extends Controller
      * @param  \App\Models\Compra  $compra
      * @return \Illuminate\Http\Response
      */
-    public function show(Compra $compra)
+    public function show(Compra $compra)//muestra de compra
     {
         return redirect()->back();
     }
@@ -110,7 +110,7 @@ class CompraController extends Controller
      * @param  \App\Models\Compra  $compra
      * @return \Illuminate\Http\Response
      */
-    public function edit(Compra $compra)
+    public function edit(Compra $compra)//edicion de compra
     {
         return redirect()->back();
     }
@@ -122,7 +122,7 @@ class CompraController extends Controller
      * @param  \App\Models\Compra  $compra
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Compra $compra)
+    public function update(Request $request, Compra $compra)//Actulizacion de compra
     {
         return redirect()->back();
     }
@@ -133,7 +133,7 @@ class CompraController extends Controller
      * @param  \App\Models\Compra  $compra
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Compra $compra)
+    public function destroy(Compra $compra)//Eliminacion de compra
     {
         return redirect()->back();
     }

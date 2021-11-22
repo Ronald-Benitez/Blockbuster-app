@@ -1,4 +1,4 @@
-<?php
+<?php//controladores para fitros
 
 namespace App\Http\Controllers;
 
@@ -23,7 +23,7 @@ class FiltrosController extends Controller
         return redirect()->back();
     }
 
-    public function byPopulares()
+    public function byPopulares()//filtro por popularidad
     {
         $pelicula = \DB::table('peliculas')
             ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
@@ -34,7 +34,7 @@ class FiltrosController extends Controller
         return view('pelicula.index')->with('peliculas', $pelicula);
     }
 
-    public function byNombre()
+    public function byNombre()//fitro por nombre
     {
         $pelicula = \DB::table('peliculas')
             ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
@@ -45,7 +45,7 @@ class FiltrosController extends Controller
         return view('pelicula.index')->with('peliculas', $pelicula);
     }
 
-    public function disponibles()
+    public function disponibles()//Filtro por disponiblidad
     {
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
             $pelicula = \DB::table('peliculas')
@@ -71,7 +71,7 @@ class FiltrosController extends Controller
         return redirect()->back();
     }
 
-    public function sinStock()
+    public function sinStock()//pelicula sin disponiblidad
     {
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
             $pelicula = \DB::table('peliculas')
@@ -97,7 +97,7 @@ class FiltrosController extends Controller
         return redirect()->back();
     }
 
-    public function likeThis(Request $request)
+    public function likeThis(Request $request)//opcion de me gusta
     {
         $request->validate([
             'search' => 'required'

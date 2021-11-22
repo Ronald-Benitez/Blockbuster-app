@@ -1,5 +1,5 @@
 <?php
-
+//CONTROLADOR DE INFO PELICULAS
 namespace App\Http\Controllers;
 
 use App\Models\Pelicula;
@@ -27,7 +27,7 @@ class PeliculaController extends Controller
 
     public function index()
     {
-        $pelicula = \DB::table('peliculas')
+        $pelicula = \DB::table('peliculas')//PELICULAS DISPONIBLES
             ->select('id', 'updated_at', 'name', 'synopsis', 'img', 'likes', 'stock')
             ->where('stock', '>', 0)
             ->orderBy('name', 'asc')
@@ -47,7 +47,7 @@ class PeliculaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create()//FUNCION DE ADMIN, CREACION DE PELICULAS
     {
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
             return view('pelicula.form')->with("data", new help);
@@ -66,7 +66,7 @@ class PeliculaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request)//FUNCION DE ADMIN, GUARDADO DE PELICULAS
     {
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
             $request->validate([
@@ -113,7 +113,7 @@ class PeliculaController extends Controller
      * @param  \App\Models\Pelicula  $pelicula
      * @return \Illuminate\Http\Response
      */
-    public function show($pelicula)
+    public function show($pelicula)//VISUALIZACION DE PELICULAS
     {
         $movie = \DB::table('peliculas')
             ->where('id', '=', $pelicula)
@@ -176,7 +176,7 @@ class PeliculaController extends Controller
      * @param  \App\Models\Pelicula  $pelicula
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id)////PERMISO PARA EDITAR PELICULAS
     {
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
             $pelicula = Pelicula::where('id', $id)->first();
@@ -200,7 +200,7 @@ class PeliculaController extends Controller
      * @param  \App\Models\Pelicula  $pelicula
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $pelicula)
+    public function update(Request $request, $pelicula)//FUNCION DE ADMIN, EDITAR PELICULAS
     {
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
             $request->validate([
@@ -261,7 +261,7 @@ class PeliculaController extends Controller
      * @param  \App\Models\Pelicula  $pelicula
      * @return \Illuminate\Http\Response
      */
-    public function destroy($pelicula)
+    public function destroy($pelicula)//FUNCION DE ADMIN, ELIMINAR PELICULAS
     {
         if (session()->exists("typeUser") && session()->get("typeUser") == "admin") {
             $movie =  DB::table('peliculas')

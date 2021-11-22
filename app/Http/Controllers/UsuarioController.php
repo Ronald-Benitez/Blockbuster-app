@@ -1,5 +1,5 @@
 <?php
-
+//CONTROLADORES DEL USUARIO
 namespace App\Http\Controllers;
 
 use App\Models\Compra;
@@ -18,7 +18,7 @@ class UsuarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index()//PERMISOS, SOLO ADMIN
     {
         if (session()->exists('typeUser')) {
             if (session()->get('typeUser') != "admin") {
@@ -92,7 +92,7 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        //Verificacion de Sessiones
+        //Verificacion de Sesiones
         if (session()->exists('typeUser')) {
             if ($id != session()->get('idUser')) {
                 session()->put('alert', "danger");
@@ -110,14 +110,14 @@ class UsuarioController extends Controller
 
             return redirect()->route('Usuario.index');
         }
-        //LLamado de las siguientes tablas
-        //likes
+        //LLAMADO DE LAS SIGUIENTES TABLAS
+        //LIKES
         $likes = DB::table('likes')
             ->join('peliculas', 'peliculas.id', '=', 'likes.idMovie')
             ->select('peliculas.id', 'peliculas.name',)
             ->where('likes.idUser', $id)
             ->get();
-        //Compras de peliculas
+        //COMPRAS DE PELICULAS
         $compras = DB::table('compras')
             ->select('idMovie', 'created_at', 'name', 'buyP', 'id')
             ->where('compras.idUser', '=', $id)
@@ -142,7 +142,7 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
-
+//PERMISO DE USUARIO, SOLO ADMIN
         if (session()->exists('typeUser')) {
             if (session()->get('typeUser') != "admin" && (session()->get('idUser') != $id)) {
                 session()->put('alert', "danger");
@@ -220,7 +220,7 @@ class UsuarioController extends Controller
      * @param  \App\Models\Usuario  $usuario
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id)//ELIMINACION DE USUARIO
     {
         $usuario = $this->existeUsuario($id);
         $usuario->delete();
@@ -229,7 +229,7 @@ class UsuarioController extends Controller
         return redirect()->route('Usuario.index');
     }
 
-    private function existeUsuario($id)
+    private function existeUsuario($id)//USUARIOS EXISTENTES
     {
         $usuario = Usuario::where('id', '=', $id)->first();
         if (empty($usuario)) { //USUSARIO NO ENCONTRADO
