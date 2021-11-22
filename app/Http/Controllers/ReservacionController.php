@@ -1,6 +1,7 @@
 <?php
-//COTROLADOR DE RESERVACIONES DE PELICULAS
+
 namespace App\Http\Controllers;
+//COTROLADOR DE RESERVACIONES DE PELICULAS
 
 use App\Models\Reservacion;
 use App\Models\Pelicula;
@@ -48,16 +49,16 @@ class ReservacionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)//RENTA DE PELICULA AL USUARIO
+    public function store(Request $request) //RENTA DE PELICULA AL USUARIO
     {
-        if (session()->exists("idUser")) {//USUARIO REGISTRA
+        if (session()->exists("idUser")) { //USUARIO REGISTRA
             $movieData = \DB::table('peliculas')
                 ->where('id', $request->input('idM'))
                 ->get();
             // echo "<pre>";
             // var_dump($movieData[0]);
             // echo "</pre>";
-            if ($movieData[0]->stock > 0) {//PELICULA DISPONIBLE
+            if ($movieData[0]->stock > 0) { //PELICULA DISPONIBLE
                 Reservacion::create([
                     "idUser" => session()->get('idUser'),
                     "idMovie" => $request->input("idM"),
@@ -73,7 +74,7 @@ class ReservacionController extends Controller
                     'estado' => 'Película rentada con éxito',
                     'alert' => 'success'
                 ]);
-            } else {//PELICULA NO DISPONIBLE
+            } else { //PELICULA NO DISPONIBLE
                 // echo "<pre>";
                 // var_dump($si);
                 // echo "</pre>";
@@ -100,7 +101,7 @@ class ReservacionController extends Controller
      * @param  \App\Models\Reservacion  $reservacion
      * @return \Illuminate\Http\Response
      */
-    public function show($reservacion)//INFORMACION DE LA RESERVACION
+    public function show($reservacion) //INFORMACION DE LA RESERVACION
     {
         if (session()->exists("idUser")) {
             $alquiler = \DB::table('reservacions')
@@ -155,7 +156,7 @@ class ReservacionController extends Controller
      * @param  \App\Models\Reservacion  $reservacion
      * @return \Illuminate\Http\Response
      */
-    public function destroy($reservacion)//ELIMINACION DE LA RESRVACION
+    public function destroy($reservacion) //ELIMINACION DE LA RESRVACION
     {
         if (session()->exists("idUser")) {
             $movieData = \DB::table('peliculas')
