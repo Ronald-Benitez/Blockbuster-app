@@ -9,9 +9,9 @@ class LoginController extends Controller
     public function index(){
         return view('login.index');
     }
-    public function loguear(Request $request){
+    public function loguear(Request $request){//INICIO DE SESION DEL USUARIO
         
-        $request->validate([
+        $request->validate([//VALIDACION DE INFORMACION REQUERIDA
             'username'=>'required|alpha_dash',
             'password'=>'required'
         ]);
@@ -34,19 +34,19 @@ class LoginController extends Controller
                     'estado'=>"¡ Bienvenido ".$usuario->username." !"
                 ]);
                 return redirect()->route('Pelicula.index');
-            }else{
+            }else{//ERROR EN CONTRASEÑA
                 $request->session()->put('alert', "danger");
                 $request->session()->put('estado', "Contraseña incorrecta");
                 return view('login.index');
             
             }
-        }else{
+        }else{//COMPROVACION DE USUARIO EXISTENTE
             $request->session()->put('alert', "danger");
             $request->session()->put('estado', "El usuario ".$request->username." no existe");
             return view('login.index');
         }
     }
-    public function logout(){
+    public function logout(){//CIERRE DE SESION DEL USUARIO
         session()->flush();
         session()->put('alert', 'success');
         session()->put('estado', '¡ Gracias por visitarnos !');  

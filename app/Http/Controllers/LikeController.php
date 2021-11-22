@@ -1,5 +1,5 @@
 <?php
-
+//Controlador de la funcion de me gusta
 namespace App\Http\Controllers;
 
 use App\Models\Like;
@@ -35,7 +35,7 @@ class LikeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request)//registro de pelicula con me gusta
     {
         if (session()->exists("idUser")) {
             $movieData = \DB::table('peliculas')
@@ -92,7 +92,7 @@ class LikeController extends Controller
      * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function destroy($like)
+    public function destroy($like)//QUITAR ME GUSTA
     {
         $movieData = \DB::table('peliculas')
             ->where('id', session()->get('idMovie'))
